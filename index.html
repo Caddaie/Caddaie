@@ -944,9 +944,12 @@
                         <div class="gps-indicator" id="gpsIndicator"></div>
                         <div>
                             <div class="settings-label">GPS Status</div>
-                            <div class="settings-value" id="gpsText">Requesting permission...</div>
+                            <div class="settings-value" id="gpsText">Checking GPS...</div>
                         </div>
                     </div>
+                    <button class="map-button" style="padding: 8px 16px; font-size: 14px;" onclick="requestGPSPermission()">
+                        Enable GPS
+                    </button>
                 </div>
                 
                 <div class="map-container">
@@ -1341,47 +1344,82 @@
             { name: 'LW', distance: 110 }
         ];
         
-        // Initialize GPS on load
+        // Initialize GPS with better error handling
         async function initializeGPS() {
             const gpsIndicator = document.getElementById('gpsIndicator');
             const gpsText = document.getElementById('gpsText');
             
+            // Check if geolocation is available
             if (!navigator.geolocation) {
                 gpsText.textContent = 'GPS not supported';
+                showNotification('GPS not supported on this device');
+                return;
+            }
+            
+            // Check if on HTTPS
+            if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                gpsText.textContent = 'HTTPS required for GPS';
+                showNotification('GPS requires secure connection (HTTPS)');
                 return;
             }
             
             try {
-                // Request permission and get position
+                gpsText.textContent = 'Requesting GPS permission...';
+                
+                // First, try to get permission status
+                if (navigator.permissions) {
+                    const result = await navigator.permissions.query({ name: 'geolocation' });
+                    
+                    if (result.state === 'denied') {
+                        gpsText.textContent = 'GPS Permission Denied';
+                        showNotification('Please enable location in browser settings');
+                        
+                        // Show instructions
+                        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                            showNotification('Settings > Privacy > Location Services > Safari');
+                        } else if (/Android/.test(navigator.userAgent)) {
+                            showNotification('Settings > Site Settings > Location');
+                        }
+                        return;
+                    }
+                }
+                
+                // Request position with timeout
                 const position = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                    const options = {
                         enableHighAccuracy: true,
                         timeout: 10000,
                         maximumAge: 0
-                    });
+                    };
+                    
+                    navigator.geolocation.getCurrentPosition(
+                        resolve,
+                        reject,
+                        options
+                    );
                 });
                 
+                // Success!
                 userLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                     accuracy: position.coords.accuracy
                 };
                 
-                // Update UI
                 gpsIndicator.classList.add('active');
                 gpsText.textContent = `GPS Active (±${Math.round(position.coords.accuracy)}m)`;
                 
-                // Set default pin location (100 yards away)
+                // Set default pin location (100 yards north)
                 if (!pinLocation) {
                     pinLocation = {
-                        lat: userLocation.lat + 0.0008, // ~100 yards north
+                        lat: userLocation.lat + 0.0008,
                         lng: userLocation.lng
                     };
                 }
                 
-                // Update display
                 updateLocationDisplay();
                 calculateRealDistance();
+                showNotification('GPS location acquired!');
                 
                 // Watch position for updates
                 watchId = navigator.geolocation.watchPosition((position) => {
@@ -1399,13 +1437,33 @@
                 
             } catch (error) {
                 console.error('GPS Error:', error);
-                gpsText.textContent = 'GPS Permission Denied';
                 
-                // Use default locations
-                userLocation = { lat: 36.5686, lng: -121.9495 }; // Pebble Beach
+                // Specific error messages
+                if (error.code === 1) {
+                    gpsText.textContent = 'GPS Permission Denied';
+                    showNotification('Location access was denied. Please check browser settings.');
+                } else if (error.code === 2) {
+                    gpsText.textContent = 'GPS Unavailable';
+                    showNotification('GPS position unavailable. Check device settings.');
+                } else if (error.code === 3) {
+                    gpsText.textContent = 'GPS Timeout';
+                    showNotification('GPS request timed out. Try again.');
+                } else {
+                    gpsText.textContent = 'GPS Error';
+                    showNotification('Unknown GPS error. Using manual entry.');
+                }
+                
+                // Use default location as fallback
+                userLocation = { lat: 36.5686, lng: -121.9495 };
                 pinLocation = { lat: 36.5696, lng: -121.9485 };
                 updateLocationDisplay();
             }
+        }
+        
+        // Add manual GPS trigger button
+        function requestGPSPermission() {
+            showNotification('Requesting GPS permission...');
+            initializeGPS();
         }
         
         // Calculate real distance
