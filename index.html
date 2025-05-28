@@ -1460,10 +1460,123 @@
             }
         }
         
-        // Add manual GPS trigger button
-        function requestGPSPermission() {
+        // Add manual GPS trigger button with better feedback
+        async function requestGPSPermission() {
+            const gpsText = document.getElementById('gpsText');
+            const gpsIndicator = document.getElementById('gpsIndicator');
+            const button = event.target;
+            
+            // Visual feedback
+            button.disabled = true;
+            button.textContent = 'Requesting...';
+            gpsText.textContent = 'Requesting GPS permission...';
+            
+            // Show what's happening
+            console.log('GPS Permission requested');
             showNotification('Requesting GPS permission...');
-            initializeGPS();
+            
+            // Add a small delay to show the user something is happening
+            setTimeout(async () => {
+                try {
+                    // Try direct position request
+                    const position = await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(
+                            (pos) => {
+                                console.log('GPS Success:', pos);
+                                resolve(pos);
+                            },
+                            (err) => {
+                                console.error('GPS Error:', err);
+                                reject(err);
+                            },
+                            {
+                                enableHighAccuracy: true,
+                                timeout: 10000,
+                                maximumAge: 0
+                            }
+                        );
+                    });
+                    
+                    // Success!
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                        accuracy: position.coords.accuracy
+                    };
+                    
+                    gpsIndicator.classList.add('active');
+                    gpsText.textContent = `GPS Active (±${Math.round(position.coords.accuracy)}m)`;
+                    
+                    if (!pinLocation) {
+                        pinLocation = {
+                            lat: userLocation.lat + 0.0008,
+                            lng: userLocation.lng
+                        };
+                    }
+                    
+                    updateLocationDisplay();
+                    calculateRealDistance();
+                    showNotification('GPS location acquired!');
+                    
+                    button.textContent = 'GPS Active';
+                    button.style.background = 'var(--success)';
+                    
+                } catch (error) {
+                    console.error('GPS Permission Error:', error);
+                    
+                    // Show specific error
+                    if (error.code === 1) {
+                        gpsText.textContent = 'Permission Denied';
+                        showNotification('Location blocked. Check site settings.');
+                        
+                        // Show how to fix
+                        setTimeout(() => {
+                            if (confirm('GPS is blocked. Open site settings?')) {
+                                // Try to help user
+                                showNotification('Look for location/GPS settings for this site');
+                            }
+                        }, 1000);
+                    } else if (error.code === 2) {
+                        gpsText.textContent = 'GPS Unavailable';
+                        showNotification('Turn on location services in phone settings');
+                    } else if (error.code === 3) {
+                        gpsText.textContent = 'GPS Timeout';
+                        showNotification('GPS timed out. Try again.');
+                    }
+                    
+                    button.textContent = 'Try Again';
+                    button.disabled = false;
+                }
+            }, 100);
+        }
+        
+        // Test function to check GPS availability
+        function testGPS() {
+            console.log('Testing GPS...');
+            console.log('Protocol:', location.protocol);
+            console.log('Hostname:', location.hostname);
+            console.log('Geolocation available:', 'geolocation' in navigator);
+            
+            if ('geolocation' in navigator) {
+                // Try to get current position
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        console.log('Test successful!', position);
+                        alert('GPS works! Lat: ' + position.coords.latitude.toFixed(4));
+                    },
+                    (error) => {
+                        console.error('Test failed:', error);
+                        alert('GPS Error ' + error.code + ': ' + error.message);
+                    },
+                    {
+                        enableHighAccuracy: false,
+                        timeout: 5000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                alert('Geolocation not supported');
+            }
         }
         
         // Calculate real distance
