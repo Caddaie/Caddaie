@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaddAIe - Professional Golf Caddie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1a1a1a;
+            --accent: #8B7355;
+            --gold: #D4AF37;
+            --cream: #FAF8F3;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8F6F1;
+            --bg-tertiary: #EFEFEC;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-tertiary: #999999;
+            --border: #E5E5E5;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --success: #4A7C59;
+            --danger: #B85450;
+        }
+        
+        @font-face {
+            font-family: 'Titleist';
+            font-weight: 400;
+            font-style: normal;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Header */
+        .header {
+            background: var(--bg-primary);
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary);
+        }
+        
+        .pro-badge {
+            background: var(--primary);
+            color: var(--cream);
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pro-badge:hover {
+            background: var(--accent);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding-bottom: 80px;
+        }
+        
+        /* Distance Display */
+        .distance-section {
+            background: var(--bg-secondary);
+            padding: 40px 24px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .distance-label {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        .distance-value {
+            font-size: 84px;
+            font-weight: 200;
+            line-height: 1;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .distance-unit {
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-left: 8px;
+        }
+        
+        .distance-raw {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            margin-top: 12px;
+        }
+        
+        /* Notebook Style Section */
+        .notebook-section {
+            background: var(--cream);
+            padding: 24px;
+            margin: 20px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+        
+        .notebook-section::before {
+            content: '';
+            position: absolute;
+            left: 40px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #E8DFD0;
+        }
+        
+        .notebook-title {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+            padding-left: 60px;
+        }
+        
+        /* Factors List */
+        .factors-list {
+            padding-left: 60px;
+        }
+        
+        .factor-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #E8DFD0;
+            transition: all 0.2s ease;
+        }
+        
+        .factor-item:last-child {
+            border-bottom: none;
+        }
+        
+        .factor-item:hover {
+            opacity: 0.8;
+        }
+        
+        .factor-name {
+            font-size: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .factor-icon {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .factor-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--text-primary);
+            fill: none;
+            stroke-width: 1.5;
+            opacity: 0.7;
+        }
+        
+        .factor-details {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+        
+        .factor-value {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--success);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .factor-value.negative {
+            color: var(--danger);
+        }
+        
+        /* Control Cards */
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 20px;
+        }
+        
+        .control-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        
+        .control-icon {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .control-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--text-primary);
+            fill: none;
+            stroke-width: 1.5;
+            opacity: 0.8;
+        }
+        
+        .control-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .control-value {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* Camera Section */
+        .camera-section {
+            padding: 20px;
+        }
+        
+        .camera-button {
+            width: 100%;
+            background: var(--primary);
+            color: var(--cream);
+            border: none;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .camera-button:hover {
+            background: var(--accent);
+        }
+        
+        .camera-button svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+        }
+        
+        /* Club Recommendation */
+        .club-section {
+            background: var(--bg-secondary);
+            padding: 24px;
+            margin: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .club-title {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        
+        .club-recommendation {
+            font-size: 32px;
+            font-weight: 300;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .club-distance {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border);
+            padding: 12px 0 20px;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.5;
+        }
+        
+        .nav-item.active {
+            opacity: 1;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--text-secondary);
+            fill: none;
+            stroke-width: 1.5;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item.active .nav-icon svg {
+            stroke: var(--text-primary);
+            stroke-width: 2;
+        }
+        
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+        
+        /* Premium Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .premium-modal {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 40px 30px 30px;
+            max-width: 380px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .premium-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .premium-title {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+        
+        .premium-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+        
+        /* Pricing Options */
+        .pricing-options {
+            margin-bottom: 24px;
+        }
+        
+        .pricing-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .pricing-card:hover {
+            border-color: var(--accent);
+        }
+        
+        .pricing-card.selected {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        
+        .pricing-card.recommended::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--cream);
+            padding: 4px 12px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 4px;
+        }
+        
+        .pricing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+        
+        .pricing-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .pricing-price {
+            font-size: 24px;
+            font-weight: 300;
+            color: var(--primary);
+        }
+        
+        .pricing-period {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .pricing-features {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+        
+        /* Features List */
+        .features-list {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .feature-check {
+            color: var(--success);
+            font-size: 16px;
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            width: 100%;
+            background: var(--primary);
+            color: var(--cream);
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background: var(--accent);
+        }
+        
+        /* Settings View */
+        .settings-container {
+            padding: 20px;
+            display: none;
+        }
+        
+        .settings-container.active {
+            display: block;
+        }
+        
+        .settings-group {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-label {
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+        
+        .settings-value {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 28px;
+            background: var(--bg-tertiary);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .toggle-switch.active {
+            background: var(--success);
+        }
+        
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-switch.active::before {
+            transform: translateX(20px);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: var(--cream);
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            animation: notificationSlide 3s ease;
+        }
+        
+        @keyframes notificationSlide {
+            0% { opacity: 0; transform: translate(-50%, -20px); }
+            10% { opacity: 1; transform: translate(-50%, 0); }
+            90% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -20px); }
+        }
+        
+        /* Loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        
+        .loading-overlay.active {
+            display: flex;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main View -->
+        <div id="mainView">
+            <div class="header">
+                <div class="header-content">
+                    <div class="logo">CaddAIe</div>
+                    <div class="pro-badge" onclick="showPremiumModal()">Pro</div>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <div class="distance-section">
+                    <div class="distance-label">Adjusted Distance</div>
+                    <div>
+                        <span class="distance-value" id="adjustedDistance">171</span>
+                        <span class="distance-unit">yds</span>
+                    </div>
+                    <div class="distance-raw">GPS Distance: <span id="rawDistance">162</span> yards</div>
+                </div>
+                
+                <div class="notebook-section">
+                    <div class="notebook-title">Shot Adjustments</div>
+                    <div class="factors-list" id="factorsList">
+                        <div class="factor-item">
+                            <div>
+                                <div class="factor-name">
+                                    <span class="factor-icon">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M3 20l4-8 4 8M7 12l5-10 5 10"/>
+                                            <path d="M19 20l-2-4"/>
+                                        </svg>
+                                    </span>
+                                    <span>Elevation</span>
+                                </div>
+                                <div class="factor-details">18 feet uphill</div>
+                            </div>
+                            <div class="factor-value">+6</div>
+                        </div>
+                        <div class="factor-item">
+                            <div>
+                                <div class="factor-name">
+                                    <span class="factor-icon">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
+                                        </svg>
+                                    </span>
+                                    <span>Wind</span>
+                                </div>
+                                <div class="factor-details">12 mph tailwind</div>
+                            </div>
+                            <div class="factor-value negative">-4</div>
+                        </div>
+                        <div class="factor-item">
+                            <div>
+                                <div class="factor-name">
+                                    <span class="factor-icon">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M12 2v20m0-20c-2 0-3 1-3 3v10c0 2 1 3 3 3s3-1 3-3V5c0-2-1-3-3-3z"/>
+                                            <circle cx="12" cy="19" r="3"/>
+                                        </svg>
+                                    </span>
+                                    <span>Temperature</span>
+                                </div>
+                                <div class="factor-details">58°F - Cold air</div>
+                            </div>
+                            <div class="factor-value">+2</div>
+                        </div>
+                        <div class="factor-item">
+                            <div>
+                                <div class="factor-name">
+                                    <span class="factor-icon">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                                        </svg>
+                                    </span>
+                                    <span>Conditions</span>
+                                </div>
+                                <div class="factor-details">65% humidity</div>
+                            </div>
+                            <div class="factor-value">+1</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-grid">
+                    <div class="control-card" onclick="updateWeather()">
+                        <div class="control-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+                                <circle cx="12" cy="12" r="5"/>
+                            </svg>
+                        </div>
+                        <div class="control-label">Weather</div>
+                        <div class="control-value">Update</div>
+                    </div>
+                    <div class="control-card" onclick="adjustSlope()">
+                        <div class="control-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M3 21l18-18M3 21h18v-18"/>
+                            </svg>
+                        </div>
+                        <div class="control-label">Slope</div>
+                        <div class="control-value">Measure</div>
+                    </div>
+                    <div class="control-card" onclick="changeDistance()">
+                        <div class="control-icon">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+                                <path d="M20.5 7.5L16 12l4.5 4.5M3.5 7.5L8 12l-4.5 4.5"/>
+                            </svg>
+                        </div>
+                        <div class="control-label">Distance</div>
+                        <div class="control-value">GPS</div>
+                    </div>
+                    <div class="control-card" onclick="showPremiumModal()">
+                        <div class="control-icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                        </div>
+                        <div class="control-label">Course</div>
+                        <div class="control-value">Map</div>
+                    </div>
+                </div>
+                
+                <div class="camera-section">
+                    <button class="camera-button" onclick="capturePhoto()">
+                        <input type="file" id="photoInput" accept="image/*" capture="environment">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="7" width="18" height="14" rx="2"/>
+                            <circle cx="12" cy="14" r="3"/>
+                            <circle cx="17" cy="10" r="1"/>
+                        </svg>
+                        <span>Analyze Ball Lie</span>
+                    </button>
+                </div>
+                
+                <div class="club-section">
+                    <div class="club-title">Recommended Club</div>
+                    <div class="club-recommendation" id="recommendedClub">7 Iron</div>
+                    <div class="club-distance">Stock distance: 170 yds</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings View -->
+        <div id="settingsView" class="settings-container">
+            <div class="header">
+                <div class="header-content">
+                    <div class="logo">Settings</div>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <h3 style="font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">Unit Preferences</h3>
+                <div class="settings-item">
+                    <div class="settings-label">Measurement System</div>
+                    <div class="units-toggle">
+                        <button class="unit-option active" onclick="setUnits('imperial', this)">Imperial</button>
+                        <button class="unit-option" onclick="setUnits('metric', this)">Metric</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-label">Distance</div>
+                        <div class="settings-value" id="distanceUnit">Yards</div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-label">Temperature</div>
+                        <div class="settings-value" id="tempUnit">Fahrenheit</div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-label">Wind Speed</div>
+                        <div class="settings-value" id="windUnit">MPH</div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-label">Elevation</div>
+                        <div class="settings-value" id="elevationUnit">Feet</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <div class="settings-item">
+                    <div class="settings-label">Subscription</div>
+                    <div class="settings-value">Free</div>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-label">Version</div>
+                    <div class="settings-value">1.0.0</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-container">
+                <div class="nav-item active" onclick="showView('main')">
+                    <div class="nav-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C8 2 5 5 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-4-3-7-7-7z"/>
+                            <circle cx="12" cy="9" r="2.5"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">Play</div>
+                </div>
+                <div class="nav-item" onclick="showView('bag')">
+                    <div class="nav-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 7h14l-1 10H6L5 7zm3-4h8v4H8V3z"/>
+                            <path d="M9 9v6m6-6v6"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">Bag</div>
+                </div>
+                <div class="nav-item" onclick="showView('stats')">
+                    <div class="nav-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 3v18h18"/>
+                            <path d="M7 16l4-8 4 6 4-4"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">Stats</div>
+                </div>
+                <div class="nav-item" onclick="showView('settings')">
+                    <div class="nav-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+                            <path d="M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24m0-15.56l-4.24 4.24m-7.08 7.08l-4.24 4.24"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">More</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Premium Modal -->
+    <div class="modal-overlay" id="premiumModal">
+        <div class="premium-modal">
+            <button class="modal-close" onclick="hidePremiumModal()">×</button>
+            
+            <div class="premium-header">
+                <div class="premium-title">CaddAIe Pro</div>
+                <div class="premium-subtitle">Professional caddie in your pocket</div>
+            </div>
+            
+            <div class="pricing-options">
+                <div class="pricing-card" onclick="selectPlan(this, 'round')">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Per Round</div>
+                        <div class="pricing-price">$1.99</div>
+                    </div>
+                    <div class="pricing-features">Single round access to all features</div>
+                </div>
+                
+                <div class="pricing-card recommended selected" onclick="selectPlan(this, 'monthly')">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Monthly</div>
+                        <div class="pricing-price">$9.99</div>
+                    </div>
+                    <div class="pricing-features">Unlimited rounds, all premium features</div>
+                </div>
+                
+                <div class="pricing-card" onclick="selectPlan(this, 'annual')">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Annual</div>
+                        <div class="pricing-price">$69.99</div>
+                    </div>
+                    <div class="pricing-features">Best value - save 40%</div>
+                </div>
+            </div>
+            
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span>Professional lie analysis</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span>Real-time weather updates</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span>Course elevation maps</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span>Shot tracking & statistics</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span>Club recommendations</span>
+                </div>
+            </div>
+            
+            <button class="cta-button" onclick="subscribeToPlan()">Start Free Trial</button>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <script>
+        // App State
+        let appState = {
+            distance: 162,
+            adjustedDistance: 171,
+            factors: {
+                elevation: 6,
+                wind: -4,
+                temperature: 2,
+                humidity: 1,
+                lie: 0
+            },
+            isPremium: false,
+            selectedPlan: 'monthly',
+            units: 'imperial' // 'imperial' or 'metric'
+        };
+        
+        // Unit Conversion Functions
+        const unitConversions = {
+            yardsToMeters: (yards) => Math.round(yards * 0.9144),
+            metersToYards: (meters) => Math.round(meters * 1.09361),
+            feetToMeters: (feet) => Math.round(feet * 0.3048),
+            metersToFeet: (meters) => Math.round(meters * 3.28084),
+            fahrenheitToCelsius: (f) => Math.round((f - 32) * 5/9),
+            celsiusToFahrenheit: (c) => Math.round((c * 9/5) + 32),
+            mphToKph: (mph) => Math.round(mph * 1.60934),
+            kphToMph: (kph) => Math.round(kph * 0.621371)
+        };
+        
+        // Set Units
+        function setUnits(system, button) {
+            appState.units = system;
+            
+            // Update toggle buttons
+            document.querySelectorAll('.unit-option').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Update unit displays
+            if (system === 'metric') {
+                document.getElementById('distanceUnit').textContent = 'Meters';
+                document.getElementById('tempUnit').textContent = 'Celsius';
+                document.getElementById('windUnit').textContent = 'KPH';
+                document.getElementById('elevationUnit').textContent = 'Meters';
+                document.querySelector('.distance-unit').textContent = 'm';
+            } else {
+                document.getElementById('distanceUnit').textContent = 'Yards';
+                document.getElementById('tempUnit').textContent = 'Fahrenheit';
+                document.getElementById('windUnit').textContent = 'MPH';
+                document.getElementById('elevationUnit').textContent = 'Feet';
+                document.querySelector('.distance-unit').textContent = 'yds';
+            }
+            
+            // Update all displays
+            updateDisplay();
+            updateFactorsList();
+            updateClubRecommendation();
+        }
+        
+        // Club Data
+        const clubs = [
+            { name: 'Driver', distance: 280 },
+            { name: '3 Wood', distance: 240 },
+            { name: '5 Wood', distance: 220 },
+            { name: '3 Hybrid', distance: 210 },
+            { name: '4 Iron', distance: 200 },
+            { name: '5 Iron', distance: 190 },
+            { name: '6 Iron', distance: 180 },
+            { name: '7 Iron', distance: 170 },
+            { name: '8 Iron', distance: 160 },
+            { name: '9 Iron', distance: 150 },
+            { name: 'PW', distance: 140 },
+            { name: 'GW', distance: 130 },
+            { name: 'SW', distance: 120 },
+            { name: 'LW', distance: 110 }
+        ];
+        
+        // Initialize
+        function init() {
+            updateDisplay();
+            updateClubRecommendation();
+            document.getElementById('photoInput').addEventListener('change', handlePhotoUpload);
+        }
+        
+        // Update Display
+        function updateDisplay() {
+            const rawDistance = appState.units === 'metric' 
+                ? unitConversions.yardsToMeters(appState.distance)
+                : appState.distance;
+            const adjustedDistance = appState.units === 'metric'
+                ? unitConversions.yardsToMeters(appState.adjustedDistance)
+                : appState.adjustedDistance;
+                
+            document.getElementById('rawDistance').textContent = rawDistance;
+            document.getElementById('adjustedDistance').textContent = adjustedDistance;
+        }
+        
+        // Update Club Recommendation
+        function updateClubRecommendation() {
+            const targetDistance = appState.adjustedDistance;
+            let closestClub = clubs[0];
+            let minDiff = Math.abs(clubs[0].distance - targetDistance);
+            
+            clubs.forEach(club => {
+                const diff = Math.abs(club.distance - targetDistance);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestClub = club;
+                }
+            });
+            
+            document.getElementById('recommendedClub').textContent = closestClub.name;
+        }
+        
+        // Weather Update
+        function updateWeather() {
+            showLoading();
+            setTimeout(() => {
+                const windChanges = [-8, -4, 0, 4, 8];
+                const tempChanges = [-2, 0, 2, 3];
+                
+                appState.factors.wind = windChanges[Math.floor(Math.random() * windChanges.length)];
+                appState.factors.temperature = tempChanges[Math.floor(Math.random() * tempChanges.length)];
+                
+                recalculateDistance();
+                updateFactorsList();
+                hideLoading();
+                showNotification('Weather updated');
+            }, 1000);
+        }
+        
+        // Slope Adjustment
+        function adjustSlope() {
+            const elevations = [0, 10, 18, 25, -10, -18];
+            const randomElevation = elevations[Math.floor(Math.random() * elevations.length)];
+            
+            appState.factors.elevation = Math.round(randomElevation * 0.33);
+            recalculateDistance();
+            updateFactorsList();
+            showNotification(`Elevation: ${randomElevation > 0 ? '+' : ''}${randomElevation} feet`);
+        }
+        
+        // Distance Change
+        function changeDistance() {
+            const distances = [150, 162, 175, 185, 195];
+            appState.distance = distances[Math.floor(Math.random() * distances.length)];
+            recalculateDistance();
+            showNotification(`GPS distance: ${appState.distance} yards`);
+        }
+        
+        // Recalculate Distance
+        function recalculateDistance() {
+            const totalAdjustment = Object.values(appState.factors).reduce((sum, val) => sum + val, 0);
+            appState.adjustedDistance = appState.distance + totalAdjustment;
+            updateDisplay();
+            updateClubRecommendation();
+        }
+        
+        // Update Factors List
+        function updateFactorsList() {
+            const factorsList = document.getElementById('factorsList');
+            
+            // Convert values based on units
+            const elevationFeet = Math.round(appState.factors.elevation / 0.33);
+            const elevationDisplay = appState.units === 'metric' 
+                ? `${unitConversions.feetToMeters(elevationFeet)} meters`
+                : `${elevationFeet} feet`;
+            
+            const windMph = Math.abs(Math.round(appState.factors.wind / 0.4));
+            const windDisplay = appState.units === 'metric'
+                ? `${unitConversions.mphToKph(windMph)} kph`
+                : `${windMph} mph`;
+                
+            const tempF = 58 + (appState.factors.temperature * 5);
+            const tempDisplay = appState.units === 'metric'
+                ? `${unitConversions.fahrenheitToCelsius(tempF)}°C`
+                : `${tempF}°F`;
+            
+            const factorsHtml = `
+                <div class="factor-item">
+                    <div>
+                        <div class="factor-name">
+                            <span class="factor-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M3 20l4-8 4 8M7 12l5-10 5 10"/>
+                                    <path d="M19 20l-2-4"/>
+                                </svg>
+                            </span>
+                            <span>Elevation</span>
+                        </div>
+                        <div class="factor-details">${elevationDisplay} ${appState.factors.elevation >= 0 ? 'uphill' : 'downhill'}</div>
+                    </div>
+                    <div class="factor-value ${appState.factors.elevation < 0 ? 'negative' : ''}">
+                        ${appState.factors.elevation > 0 ? '+' : ''}${appState.units === 'metric' ? unitConversions.yardsToMeters(appState.factors.elevation) : appState.factors.elevation}
+                    </div>
+                </div>
+                <div class="factor-item">
+                    <div>
+                        <div class="factor-name">
+                            <span class="factor-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
+                                </svg>
+                            </span>
+                            <span>Wind</span>
+                        </div>
+                        <div class="factor-details">${windDisplay} ${appState.factors.wind < 0 ? 'tailwind' : 'headwind'}</div>
+                    </div>
+                    <div class="factor-value ${appState.factors.wind < 0 ? 'negative' : ''}">
+                        ${appState.factors.wind > 0 ? '+' : ''}${appState.units === 'metric' ? unitConversions.yardsToMeters(appState.factors.wind) : appState.factors.wind}
+                    </div>
+                </div>
+                <div class="factor-item">
+                    <div>
+                        <div class="factor-name">
+                            <span class="factor-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2v20m0-20c-2 0-3 1-3 3v10c0 2 1 3 3 3s3-1 3-3V5c0-2-1-3-3-3z"/>
+                                    <circle cx="12" cy="19" r="3"/>
+                                </svg>
+                            </span>
+                            <span>Temperature</span>
+                        </div>
+                        <div class="factor-details">${tempDisplay}</div>
+                    </div>
+                    <div class="factor-value ${appState.factors.temperature < 0 ? 'negative' : ''}">
+                        ${appState.factors.temperature > 0 ? '+' : ''}${appState.units === 'metric' ? unitConversions.yardsToMeters(appState.factors.temperature) : appState.factors.temperature}
+                    </div>
+                </div>
+                <div class="factor-item">
+                    <div>
+                        <div class="factor-name">
+                            <span class="factor-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                                </svg>
+                            </span>
+                            <span>Conditions</span>
+                        </div>
+                        <div class="factor-details">65% humidity</div>
+                    </div>
+                    <div class="factor-value">+${appState.units === 'metric' ? unitConversions.yardsToMeters(appState.factors.humidity) : appState.factors.humidity}</div>
+                </div>
+                ${appState.factors.lie > 0 ? `
+                <div class="factor-item">
+                    <div>
+                        <div class="factor-name">
+                            <span class="factor-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M2 20h20L12 4z"/>
+                                    <path d="M7 16h10"/>
+                                </svg>
+                            </span>
+                            <span>Lie</span>
+                        </div>
+                        <div class="factor-details">Heavy rough</div>
+                    </div>
+                    <div class="factor-value">+${appState.units === 'metric' ? unitConversions.yardsToMeters(appState.factors.lie) : appState.factors.lie}</div>
+                </div>
+                ` : ''}
+            `;
+            factorsList.innerHTML = factorsHtml;
+        }
+        
+        // Photo Capture
+        function capturePhoto() {
+            if (!appState.isPremium) {
+                showPremiumModal();
+                return;
+            }
+            document.getElementById('photoInput').click();
+        }
+        
+        function handlePhotoUpload(event) {
+            if (event.target.files.length > 0) {
+                analyzeLie();
+            }
+        }
+        
+        function analyzeLie() {
+            showLoading();
+            setTimeout(() => {
+                appState.factors.lie = 8;
+                recalculateDistance();
+                updateFactorsList();
+                hideLoading();
+                showNotification('Lie analyzed: Heavy rough (+8 yards)');
+            }, 2000);
+        }
+        
+        // Navigation
+        function showView(view) {
+            document.getElementById('mainView').style.display = 'none';
+            document.getElementById('settingsView').classList.remove('active');
+            
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            
+            if (view === 'main') {
+                document.getElementById('mainView').style.display = 'block';
+                document.querySelector('.nav-item:nth-child(1)').classList.add('active');
+            } else if (view === 'settings') {
+                document.getElementById('settingsView').classList.add('active');
+                document.querySelector('.nav-item:nth-child(4)').classList.add('active');
+            } else {
+                showPremiumModal();
+                document.getElementById('mainView').style.display = 'block';
+            }
+        }
+        
+        // Premium Modal
+        function showPremiumModal() {
+            document.getElementById('premiumModal').classList.add('active');
+        }
+        
+        function hidePremiumModal() {
+            document.getElementById('premiumModal').classList.remove('active');
+        }
+        
+        function selectPlan(element, plan) {
+            document.querySelectorAll('.pricing-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            appState.selectedPlan = plan;
+        }
+        
+        function subscribeToPlan() {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                hidePremiumModal();
+                appState.isPremium = true;
+                showNotification('Welcome to CaddAIe Pro');
+                // Update UI to show premium features
+                document.querySelector('.camera-button').classList.remove('premium-locked');
+            }, 2000);
+        }
+        
+        // Loading & Notifications
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Initialize app
+        init();
+    </script>
+</body>
+</html>
