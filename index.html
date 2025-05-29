@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, 
-initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CaddAIe - Professional Golf Caddie</title>
     <meta name="theme-color" content="#000000">
-    <meta name="description" content="Professional golf distance 
-calculator with real-time GPS, weather, and elevation">
+    <meta name="description" content="Professional golf distance calculator with real-time GPS, weather, and elevation">
     
     <style>
         * {
@@ -36,8 +34,7 @@ calculator with real-time GPS, weather, and elevation">
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro 
-Display', 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
@@ -69,31 +66,6 @@ Display', 'Segoe UI', Roboto, sans-serif;
             font-weight: 400;
             letter-spacing: 3px;
             text-transform: uppercase;
-        }
-        
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .unit-toggle {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .unit-toggle:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.5);
         }
         
         .status-indicators {
@@ -387,32 +359,6 @@ Display', 'Segoe UI', Roboto, sans-serif;
             color: var(--danger);
         }
         
-        /* Lie Display */
-        .lie-display {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            background: var(--light-grey);
-            border-radius: 8px;
-        }
-        
-        .lie-type {
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-        
-        .lie-penalty {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-        
-        .lie-penalty.penalty {
-            color: var(--danger);
-        }
-        
         /* Club recommendation */
         .club-recommendation {
             background: var(--primary);
@@ -555,6 +501,61 @@ Display', 'Segoe UI', Roboto, sans-serif;
         
         .club-distance:hover {
             background: var(--light-grey);
+        }
+        
+        /* Preference Items */
+        .preference-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .preference-item:last-child {
+            border-bottom: none;
+        }
+        
+        .preference-info {
+            flex: 1;
+        }
+        
+        .preference-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .preference-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .preference-control {
+            flex-shrink: 0;
+        }
+        
+        .preference-status {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .unit-toggle {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .unit-toggle:hover {
+            background: var(--secondary);
         }
         
         /* Modals */
@@ -876,49 +877,6 @@ Display', 'Segoe UI', Roboto, sans-serif;
             cursor: not-allowed;
         }
         
-        /* Permission Modal */
-        .permission-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1001;
-        }
-        
-        .permission-content {
-            background: white;
-            padding: 30px;
-            margin: 20px;
-            border-radius: 16px;
-            max-width: 350px;
-            text-align: center;
-        }
-        
-        .permission-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 20px;
-            color: var(--primary);
-        }
-        
-        .permission-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-        
-        .permission-text {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-            margin-bottom: 24px;
-        }
-        
         /* Responsive */
         @media (max-width: 375px) {
             .distance-value {
@@ -932,20 +890,14 @@ Display', 'Segoe UI', Roboto, sans-serif;
         <!-- Header -->
         <div class="header">
             <div class="logo">CADDAIE</div>
-            <div class="header-right">
-                <button class="unit-toggle" id="unitToggle" 
-onclick="toggleUnits()">
-                    <span id="unitLabel">Imperial</span>
-                </button>
-                <div class="status-indicators">
-                    <div class="status-item">
-                        <div class="status-dot" id="gpsStatus"></div>
-                        <span>GPS</span>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-dot" id="wxStatus"></div>
-                        <span>WX</span>
-                    </div>
+            <div class="status-indicators">
+                <div class="status-item">
+                    <div class="status-dot" id="gpsStatus"></div>
+                    <span>GPS</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot" id="wxStatus"></div>
+                    <span>WX</span>
                 </div>
             </div>
         </div>
@@ -956,44 +908,30 @@ onclick="toggleUnits()">
             <div class="distance-section">
                 <div class="distance-label">Distance to Pin</div>
                 <div class="distance-display">
-                    <span class="distance-value" id="distanceValue" 
-onclick="editDistance()">146</span>
-                    <span class="distance-unit" 
-id="distanceUnit">yds</span>
-                    <button class="distance-edit" 
-onclick="editDistance()">
-                        <svg viewBox="0 0 24 24" fill="none" 
-stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 
-0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                            <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 
-9.5-9.5z"/>
+                    <span class="distance-value" id="distanceValue" onclick="editDistance()">146</span>
+                    <span class="distance-unit" id="distanceUnit">yds</span>
+                    <button class="distance-edit" onclick="editDistance()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                         </svg>
                     </button>
                 </div>
-                <div class="distance-raw">GPS Distance: <span 
-id="rawDistance">142</span> <span 
-id="rawDistanceUnit">yards</span></div>
+                <div class="distance-raw">GPS Distance: <span id="rawDistance">142</span> <span id="rawDistanceUnit">yards</span></div>
             </div>
             
             <!-- Quick Actions -->
             <div class="quick-actions">
-                <button class="action-btn" id="setPinBtn" 
-onclick="openMaps()">
-                    <svg class="action-icon" viewBox="0 0 24 24" 
-fill="none">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 
-0 1 18 0z"/>
+                <button class="action-btn" id="setPinBtn" onclick="openMaps()">
+                    <svg class="action-icon" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                         <circle cx="12" cy="10" r="3"/>
                     </svg>
                     Set Pin
                 </button>
-                <button class="action-btn" id="scanLieBtn" 
-onclick="openCamera()">
-                    <svg class="action-icon" viewBox="0 0 24 24" 
-fill="none">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 
-1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <button class="action-btn" id="scanLieBtn" onclick="openCamera()">
+                    <svg class="action-icon" viewBox="0 0 24 24" fill="none">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                         <circle cx="12" cy="13" r="4"/>
                     </svg>
                     Scan Lie
@@ -1007,25 +945,19 @@ fill="none">
                 </div>
                 <div class="conditions-grid">
                     <div class="condition-item">
-                        <div class="condition-value" 
-onclick="editValue('temp')" id="tempValue">67°</div>
+                        <div class="condition-value" onclick="editValue('temp')" id="tempValue">67°</div>
                         <div class="condition-label">Temp</div>
-                        <div class="condition-impact negative" 
-id="tempImpact">-2y</div>
+                        <div class="condition-impact negative" id="tempImpact">-2y</div>
                     </div>
                     <div class="condition-item">
-                        <div class="condition-value" 
-onclick="editValue('wind')" id="windValue">13 mph</div>
+                        <div class="condition-value" onclick="editValue('wind')" id="windValue">13 mph</div>
                         <div class="condition-label">Wind</div>
-                        <div class="condition-impact negative" 
-id="windImpact">-5y</div>
+                        <div class="condition-impact negative" id="windImpact">-5y</div>
                     </div>
                     <div class="condition-item">
-                        <div class="condition-value" 
-onclick="editValue('elevation')" id="elevValue">+17 ft</div>
+                        <div class="condition-value" onclick="editValue('elevation')" id="elevValue">+17 ft</div>
                         <div class="condition-label">Elev</div>
-                        <div class="condition-impact positive" 
-id="elevImpact">+6y</div>
+                        <div class="condition-impact positive" id="elevImpact">+6y</div>
                     </div>
                 </div>
             </div>
@@ -1038,23 +970,19 @@ id="elevImpact">+6y</div>
                 <div class="adjustments-list">
                     <div class="adjustment-item">
                         <div class="adjustment-info">
-                            <svg class="adjustment-icon" viewBox="0 0 
-24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="6,9 12,15 18,9"/>
                             </svg>
                             <div class="adjustment-details">
                                 <h4>Elevation</h4>
-                                <p id="elevationDescription">17 feet 
-uphill</p>
+                                <p id="elevationDescription">17 feet uphill</p>
                             </div>
                         </div>
-                        <div class="adjustment-value positive" 
-id="elevAdjustment">+6</div>
+                        <div class="adjustment-value positive" id="elevAdjustment">+6</div>
                     </div>
                     <div class="adjustment-item">
                         <div class="adjustment-info">
-                            <svg class="adjustment-icon" viewBox="0 0 
-24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M17.7 7.7l-4.6 4.6"/>
                                 <path d="M14.1 7.7l4.6 4.6"/>
                                 <path d="M8.8 15.3l-4.6-4.6"/>
@@ -1062,80 +990,52 @@ id="elevAdjustment">+6</div>
                             </svg>
                             <div class="adjustment-details">
                                 <h4>Wind</h4>
-                                <p id="windDescription">13 mph into 
-wind</p>
+                                <p id="windDescription">13 mph headwind</p>
                             </div>
                         </div>
-                        <div class="adjustment-value negative" 
-id="windAdjustment">-4</div>
+                        <div class="adjustment-value negative" id="windAdjustment">-4</div>
                     </div>
                     <div class="adjustment-item">
                         <div class="adjustment-info">
-                            <svg class="adjustment-icon" viewBox="0 0 
-24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
-                                <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 
-0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
+                                <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
                             </svg>
                             <div class="adjustment-details">
                                 <h4>Temperature</h4>
-                                <p id="tempDescription">67°F - Cold 
-air</p>
+                                <p id="tempDescription">67°F - Cold air</p>
                             </div>
                         </div>
-                        <div class="adjustment-value positive" 
-id="tempAdjustment">+2</div>
+                        <div class="adjustment-value positive" id="tempAdjustment">+2</div>
                     </div>
                     <div class="adjustment-item">
                         <div class="adjustment-info">
-                            <svg class="adjustment-icon" viewBox="0 0 
-24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="3"/>
-                                <path d="M12 1v6m0 6v6m11-7h-6m-6 
-0H1"/>
+                                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
                             </svg>
                             <div class="adjustment-details">
                                 <h4>Ball Lie</h4>
-                                <p id="lieDescription">Fairway - Clean 
-lie</p>
+                                <p id="lieDescription">Fairway - Clean lie</p>
                             </div>
                         </div>
-                        <div class="adjustment-value" 
-id="lieAdjustment">0</div>
+                        <div class="adjustment-value" id="lieAdjustment">0</div>
                     </div>
-                </div>
-            </div>
-            
-            <!-- Ball Lie -->
-            <div class="section">
-                <div class="section-header">
-                    <div class="section-title">Ball Lie</div>
-                    <button class="section-btn" id="scanLieBtn2" 
-onclick="openCamera()">Scan</button>
-                </div>
-                <div class="lie-display">
-                    <div class="lie-type" id="lieType">Fairway</div>
-                    <div class="lie-penalty" id="liePenalty">No 
-penalty</div>
                 </div>
             </div>
             
             <!-- Club Recommendation -->
             <div class="club-recommendation" id="clubRecommendation">
                 <div class="club-title">Recommended Club</div>
-                <div class="club-name" id="recommendedClub">7 
-Iron</div>
-                <div class="club-confidence" id="clubConfidence">Based 
-on your 145 yard average</div>
+                <div class="club-name" id="recommendedClub">7 Iron</div>
+                <div class="club-confidence" id="clubConfidence">Based on your 145 yard average</div>
                 
                 <!-- AI Commentary -->
                 <div class="ai-commentary">
                     <div class="commentary-title">Caddie Advice</div>
                     <div class="commentary-text" id="caddieAdvice">
-                        Playing 17 feet uphill with 13 mph into the 
-wind. Cold air will reduce carry. 
-                        Club up to 6-iron and focus on a lower ball 
-flight to cut through the wind.
+                        Playing 17 feet uphill with 13 mph headwind. Cold air will reduce carry. 
+                        Club up to 6-iron and focus on a lower ball flight to cut through the wind.
                     </div>
                 </div>
             </div>
@@ -1159,8 +1059,7 @@ flight to cut through the wind.
                 <div class="section-header">
                     <div class="section-title">Round Statistics</div>
                 </div>
-                <p style="color: var(--text-secondary); text-align: 
-center; padding: 40px 0;">
+                <p style="color: var(--text-secondary); text-align: center; padding: 40px 0;">
                     Shot tracking and statistics coming soon
                 </p>
             </div>
@@ -1170,12 +1069,54 @@ center; padding: 40px 0;">
         <div class="page" id="morePage">
             <div class="section">
                 <div class="section-header">
-                    <div class="section-title">Settings</div>
+                    <div class="section-title">Preferences</div>
                 </div>
-                <p style="color: var(--text-secondary); text-align: 
-center; padding: 40px 0;">
-                    Preferences and settings coming soon
-                </p>
+                
+                <!-- Unit Preference -->
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-title">Units</div>
+                        <div class="preference-description">Distance and weather units</div>
+                    </div>
+                    <div class="preference-control">
+                        <button class="unit-toggle" id="unitToggle" onclick="toggleUnits()">
+                            <span id="unitLabel">Imperial</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- GPS Preference -->
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-title">GPS Precision</div>
+                        <div class="preference-description">High accuracy location tracking</div>
+                    </div>
+                    <div class="preference-control">
+                        <div class="preference-status" id="gpsAccuracy">High</div>
+                    </div>
+                </div>
+                
+                <!-- Weather Update Frequency -->
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-title">Weather Updates</div>
+                        <div class="preference-description">Automatic weather refresh</div>
+                    </div>
+                    <div class="preference-control">
+                        <div class="preference-status">Every 5 min</div>
+                    </div>
+                </div>
+                
+                <!-- App Version -->
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-title">Version</div>
+                        <div class="preference-description">CaddAIe V12</div>
+                    </div>
+                    <div class="preference-control">
+                        <div class="preference-status">Up to date</div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -1184,29 +1125,23 @@ center; padding: 40px 0;">
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="modal-title">Set Pin Location</div>
-                    <button class="modal-close" 
-onclick="closeMaps()">&times;</button>
+                    <button class="modal-close" onclick="closeMaps()">&times;</button>
                 </div>
                 <div class="maps-container" id="mapsContainer">
                     <div class="maps-loading" id="mapsLoading">
                         <div>Loading Google Maps...</div>
                     </div>
-                    <div class="maps-error" id="mapsError" 
-style="display: none;">
+                    <div class="maps-error" id="mapsError" style="display: none;">
                         <div>Unable to load maps</div>
                         <div class="maps-fallback">
-                            <input type="number" 
-class="fallback-input" id="fallbackDistance" placeholder="Distance">
-                            <button class="modal-btn primary" 
-onclick="setManualDistance()">Set</button>
+                            <input type="number" class="fallback-input" id="fallbackDistance" placeholder="Distance">
+                            <button class="modal-btn primary" onclick="setManualDistance()">Set</button>
                         </div>
                     </div>
                 </div>
                 <div class="modal-buttons">
-                    <button class="modal-btn secondary" 
-onclick="closeMaps()">Cancel</button>
-                    <button class="modal-btn primary" 
-id="confirmPinBtn" onclick="confirmPin()" disabled>Set Pin</button>
+                    <button class="modal-btn secondary" onclick="closeMaps()">Cancel</button>
+                    <button class="modal-btn primary" id="confirmPinBtn" onclick="confirmPin()" disabled>Set Pin</button>
                 </div>
             </div>
         </div>
@@ -1216,43 +1151,33 @@ id="confirmPinBtn" onclick="confirmPin()" disabled>Set Pin</button>
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="modal-title">Scan Ball Lie</div>
-                    <button class="modal-close" 
-onclick="closeCamera()">&times;</button>
+                    <button class="modal-close" onclick="closeCamera()">&times;</button>
                 </div>
                 <div class="camera-container" id="cameraContainer">
-                    <video class="camera-video" id="cameraVideo" 
-autoplay muted playsinline style="display: none;"></video>
-                    <canvas id="cameraCanvas" style="display: 
-none;"></canvas>
+                    <video class="camera-video" id="cameraVideo" autoplay muted playsinline style="display: none;"></video>
+                    <canvas id="cameraCanvas" style="display: none;"></canvas>
                     <div class="camera-overlay" id="cameraOverlay">
                         <div class="camera-viewfinder"></div>
                     </div>
                     <div class="camera-controls" id="cameraControls">
-                        <button class="capture-btn" id="captureBtn" 
-onclick="capturePhoto()">
-                            <svg width="24" height="24" viewBox="0 0 
-24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <button class="capture-btn" id="captureBtn" onclick="capturePhoto()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="3"/>
                             </svg>
                         </button>
                     </div>
-                    <div class="camera-error" id="cameraError" 
-style="display: none;">
+                    <div class="camera-error" id="cameraError" style="display: none;">
                         <div>Camera not available</div>
                         <div class="camera-fallback">
-                            <input type="file" id="fileInput" 
-class="file-input" accept="image/*" 
-onchange="handleFileUpload(event)">
-                            <button class="file-btn" 
-onclick="document.getElementById('fileInput').click()">
+                            <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="handleFileUpload(event)">
+                            <button class="file-btn" onclick="document.getElementById('fileInput').click()">
                                 Upload Photo
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="analysis-results" id="analysisResults">
-                    <div class="analysis-title">Analysis 
-Complete</div>
+                    <div class="analysis-title">Analysis Complete</div>
                     <div class="analysis-item">
                         <span>Lie Type</span>
                         <span id="analyzedLie">Primary Rough</span>
@@ -1263,76 +1188,38 @@ Complete</div>
                     </div>
                     <div class="analysis-item">
                         <span>Confidence</span>
-                        <span class="analysis-confidence" 
-id="analyzedConfidence">94%</span>
+                        <span class="analysis-confidence" id="analyzedConfidence">94%</span>
                     </div>
                 </div>
                 <div class="modal-buttons" id="cameraButtons">
-                    <button class="modal-btn secondary" 
-onclick="closeCamera()">Cancel</button>
-                    <button class="modal-btn primary" 
-onclick="retakePhoto()" id="retakeBtn" style="display: 
-none;">Retake</button>
+                    <button class="modal-btn secondary" onclick="closeCamera()">Cancel</button>
+                    <button class="modal-btn primary" onclick="retakePhoto()" id="retakeBtn" style="display: none;">Retake</button>
                 </div>
-                <div class="modal-buttons" id="analysisButtons" 
-style="display: none;">
-                    <button class="modal-btn secondary" 
-onclick="retakePhoto()">Retake</button>
-                    <button class="modal-btn primary" 
-onclick="applyLieAnalysis()">Apply</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Permission Modal -->
-        <div class="permission-modal" id="permissionModal">
-            <div class="permission-content">
-                <svg class="permission-icon" viewBox="0 0 24 24" 
-fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 
-18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                </svg>
-                <div class="permission-title" 
-id="permissionTitle">Location Access Required</div>
-                <div class="permission-text" id="permissionText">
-                    CaddAIe needs access to your location to calculate 
-accurate distances to the pin.
-                    Your location data is only used locally and never 
-shared.
-                </div>
-                <div class="input-buttons">
-                    <button class="input-btn secondary" 
-onclick="denyPermission()">Not Now</button>
-                    <button class="input-btn primary" 
-onclick="requestPermission()">Allow</button>
+                <div class="modal-buttons" id="analysisButtons" style="display: none;">
+                    <button class="modal-btn secondary" onclick="retakePhoto()">Retake</button>
+                    <button class="modal-btn primary" onclick="applyLieAnalysis()">Apply</button>
                 </div>
             </div>
         </div>
         
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
-            <button class="nav-item active" 
-onclick="showPage('play')">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" 
-stroke="currentColor" stroke-width="2">
+            <button class="nav-item active" onclick="showPage('play')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polygon points="5,3 19,12 5,21"/>
                 </svg>
                 <div class="nav-label">Play</div>
             </button>
             <button class="nav-item" onclick="showPage('bag')">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" 
-stroke="currentColor" stroke-width="2">
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 
-2-2V6l-3-4z"/>
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
                     <line x1="3" y1="6" x2="21" y2="6"/>
                     <path d="M16 10a4 4 0 0 1-8 0"/>
                 </svg>
                 <div class="nav-label">Bag</div>
             </button>
             <button class="nav-item" onclick="showPage('stats')">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" 
-stroke="currentColor" stroke-width="2">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="20" x2="18" y2="10"/>
                     <line x1="12" y1="20" x2="12" y2="4"/>
                     <line x1="6" y1="20" x2="6" y2="14"/>
@@ -1340,8 +1227,7 @@ stroke="currentColor" stroke-width="2">
                 <div class="nav-label">Stats</div>
             </button>
             <button class="nav-item" onclick="showPage('more')">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" 
-stroke="currentColor" stroke-width="2">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="1"/>
                     <circle cx="19" cy="12" r="1"/>
                     <circle cx="5" cy="12" r="1"/>
@@ -1353,50 +1239,35 @@ stroke="currentColor" stroke-width="2">
         <!-- Input Modal -->
         <div class="input-modal" id="inputModal">
             <div class="input-content">
-                <div class="input-title" id="inputTitle">Edit 
-Value</div>
-                <input type="number" class="input-field" 
-id="inputField" placeholder="Enter value">
+                <div class="input-title" id="inputTitle">Edit Value</div>
+                <input type="number" class="input-field" id="inputField" placeholder="Enter value">
                 <div class="input-buttons">
-                    <button class="input-btn secondary" 
-onclick="closeInput()">Cancel</button>
-                    <button class="input-btn primary" 
-onclick="saveInput()">Save</button>
+                    <button class="input-btn secondary" onclick="closeInput()">Cancel</button>
+                    <button class="input-btn primary" onclick="saveInput()">Save</button>
                 </div>
             </div>
         </div>
     </div>
     
     <script>
-        // Environment Configuration - Replace with your actual values 
-for production
+        // Environment Configuration - REPLACE WITH YOUR ACTUAL API KEYS
         const CONFIG = {
-            // Development settings (safe defaults)
-            isDevelopment: window.location.hostname === 'localhost' || 
-window.location.hostname === '127.0.0.1',
+            isDevelopment: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1',
             
-            // Google Maps API - Replace with your restricted API key 
-for production
+            // IMPORTANT: Replace these with your actual API keys
             googleMapsApiKey: 'YOUR_GOOGLE_MAPS_API_KEY_HERE',
+            weatherApiKey: 'YOUR_OPENWEATHER_API_KEY_HERE',
             
-            // Weather API - Replace with your weather service API key
-            weatherApiKey: 'YOUR_OPENWEATHER_API_KEY,
-            
-            // API endpoints - Replace with your backend URLs
             endpoints: {
                 analyzeImage: '/api/analyze-lie',
-                weather: 
-'https://api.openweathermap.org/data/2.5/weather',
-                elevation: 
-'https://maps.googleapis.com/maps/api/elevation/json',
+                weather: '/api/weather',
+                elevation: '/api/elevation',
                 geocoding: '/api/geocode'
             },
             
-            // Security settings
             security: {
                 maxImageSize: 10 * 1024 * 1024, // 10MB
-                allowedImageTypes: ['image/jpeg', 'image/png', 
-'image/webp'],
+                allowedImageTypes: ['image/jpeg', 'image/png', 'image/webp'],
                 cameraTimeout: 30000 // 30 seconds
             }
         };
@@ -1404,27 +1275,23 @@ for production
         // App State
         const appState = {
             currentPage: 'play',
-            useMetric: false, // New: Track metric vs imperial 
-preference
+            useMetric: false,
             distance: {
                 raw: 142,
                 adjusted: 146,
                 manual: null
             },
             conditions: {
-                temperature: 67, // Always stored in Fahrenheit 
-internally
+                temperature: 67, // Always stored in Fahrenheit internally
                 windSpeed: 13, // Always stored in mph internally
-                windDirection: 225, // Wind direction in degrees 
-(0-360, 0=North)
-                elevation: 17, // Always stored in feet internally
+                windDirection: 225, // Wind direction in degrees (0-360, 0=North)
+                elevation: 17, // Elevation difference (pin - user) in feet
                 userElevation: 320, // User's elevation in feet
                 pinElevation: 337, // Pin's elevation in feet
                 tempAdjustment: 2,
                 windAdjustment: -4,
                 elevAdjustment: 6,
-                windType: 'headwind' // headwind, tailwind, 
-crosswind-left, crosswind-right
+                windType: 'headwind' // headwind, tailwind, crosswind-left, crosswind-right
             },
             lie: {
                 type: 'fairway',
@@ -1468,23 +1335,19 @@ crosswind-left, crosswind-right
         
         // Unit Conversion Functions
         function convertDistance(yards) {
-            return appState.useMetric ? Math.round(yards * 0.9144) : 
-yards;
+            return appState.useMetric ? Math.round(yards * 0.9144) : yards;
         }
         
         function convertTemperature(fahrenheit) {
-            return appState.useMetric ? Math.round((fahrenheit - 32) * 
-5/9) : fahrenheit;
+            return appState.useMetric ? Math.round((fahrenheit - 32) * 5/9) : fahrenheit;
         }
         
         function convertWindSpeed(mph) {
-            return appState.useMetric ? Math.round(mph * 1.60934) : 
-mph;
+            return appState.useMetric ? Math.round(mph * 1.60934) : mph;
         }
         
         function convertElevation(feet) {
-            return appState.useMetric ? Math.round(feet * 0.3048) : 
-feet;
+            return appState.useMetric ? Math.round(feet * 0.3048) : feet;
         }
         
         function getDistanceUnit() {
@@ -1514,17 +1377,37 @@ feet;
         // Toggle Units Function
         function toggleUnits() {
             appState.useMetric = !appState.useMetric;
-            document.getElementById('unitLabel').textContent = 
-appState.useMetric ? 'Metric' : 'Imperial';
+            document.getElementById('unitLabel').textContent = appState.useMetric ? 'Metric' : 'Imperial';
             updateUI();
             updateClubRecommendation();
             generateCaddieAdvice();
             populateClubList();
-            showNotification(`Switched to ${appState.useMetric ? 
-'Metric' : 'Imperial'} units`);
+            showNotification(`Switched to ${appState.useMetric ? 'Metric' : 'Imperial'} units`);
+            
+            // Save preference
+            try {
+                localStorage.setItem('caddaie-units', appState.useMetric ? 'metric' : 'imperial');
+            } catch (e) {
+                // localStorage not available
+            }
         }
         
-        // Elevation Service
+        // Load saved preference on startup
+        function loadUnitPreference() {
+            try {
+                const savedUnits = localStorage.getItem('caddaie-units');
+                if (savedUnits) {
+                    appState.useMetric = savedUnits === 'metric';
+                    if (document.getElementById('unitLabel')) {
+                        document.getElementById('unitLabel').textContent = appState.useMetric ? 'Metric' : 'Imperial';
+                    }
+                }
+            } catch (e) {
+                // localStorage not available, use default
+            }
+        }
+        
+        // Elevation Service with Real Calculation
         class ElevationService {
             constructor() {
                 this.cache = new Map();
@@ -1538,28 +1421,20 @@ appState.useMetric ? 'Metric' : 'Imperial';
                 }
                 
                 try {
-                    if (CONFIG.isDevelopment || 
-CONFIG.googleMapsApiKey === 'YOUR_GOOGLE_MAPS_API_KEY_HERE') {
-                        // Simulate elevation data for development
-                        const elevation = 300 + Math.random() * 100; 
-// 300-400 feet
+                    if (CONFIG.isDevelopment) {
+                        // Simulate realistic elevation data based on coordinates
+                        const baseElevation = 300;
+                        const variation = (Math.sin(lat * 0.1) * Math.cos(lng * 0.1) * 100);
+                        const elevation = baseElevation + variation;
                         this.cache.set(key, elevation);
                         return elevation;
                     }
                     
-                    const response = await fetch(
-                        
-`${CONFIG.endpoints.elevation}?locations=${lat},${lng}&key=${CONFIG.googleMapsApiKey}`
-                    );
-                    
-                    if (!response.ok) throw new Error('Elevation API 
-error');
-                    
+                    const response = await fetch(`${CONFIG.endpoints.elevation}?locations=${lat},${lng}`);
                     const data = await response.json();
+                    
                     if (data.results && data.results[0]) {
-                        // Convert meters to feet
-                        const elevationFeet = 
-data.results[0].elevation * 3.28084;
+                        const elevationFeet = data.results[0].elevation * 3.28084; // Convert meters to feet
                         this.cache.set(key, elevationFeet);
                         return elevationFeet;
                     }
@@ -1567,8 +1442,7 @@ data.results[0].elevation * 3.28084;
                     throw new Error('No elevation data');
                 } catch (error) {
                     console.error('Elevation service error:', error);
-                    // Return reasonable default
-                    const defaultElevation = 350;
+                    const defaultElevation = 350 + Math.random() * 50;
                     this.cache.set(key, defaultElevation);
                     return defaultElevation;
                 }
@@ -1579,30 +1453,30 @@ data.results[0].elevation * 3.28084;
                 
                 try {
                     // Get user elevation
-                    appState.conditions.userElevation = await 
-this.getElevation(
+                    appState.conditions.userElevation = await this.getElevation(
                         appState.location.current.lat,
                         appState.location.current.lng
                     );
                     
                     // Get pin elevation if set
                     if (appState.location.pin) {
-                        appState.conditions.pinElevation = await 
-this.getElevation(
+                        appState.conditions.pinElevation = await this.getElevation(
                             appState.location.pin.lat,
                             appState.location.pin.lng
                         );
                         
-                        // Calculate elevation difference
-                        appState.conditions.elevation = 
-appState.conditions.pinElevation - appState.conditions.userElevation;
+                        // Calculate elevation difference (positive = uphill, negative = downhill)
+                        appState.conditions.elevation = appState.conditions.pinElevation - appState.conditions.userElevation;
+                        
+                        console.log(`User elevation: ${appState.conditions.userElevation.toFixed(1)}ft`);
+                        console.log(`Pin elevation: ${appState.conditions.pinElevation.toFixed(1)}ft`);
+                        console.log(`Elevation difference: ${appState.conditions.elevation.toFixed(1)}ft`);
                         
                         calculateAdjustments();
                         updateUI();
                     }
                 } catch (error) {
-                    console.error('Failed to update elevations:', 
-error);
+                    console.error('Failed to update elevations:', error);
                 }
             }
         }
@@ -1621,37 +1495,25 @@ error);
                 }
                 
                 try {
-                    if (CONFIG.isDevelopment || CONFIG.weatherApiKey 
-=== 'YOUR_WEATHER_API_KEY_HERE') {
-                        // Simulate weather data for development
+                    if (CONFIG.isDevelopment) {
                         this.updateSimulatedWeather();
                         return;
                     }
                     
-                    const response = await fetch(
-                        
-`${CONFIG.endpoints.weather}?lat=${lat}&lon=${lng}&appid=${CONFIG.weatherApiKey}&units=imperial`
-                    );
-                    
-                    if (!response.ok) throw new Error('Weather API 
-error');
-                    
+                    const response = await fetch(`${CONFIG.endpoints.weather}?lat=${lat}&lon=${lng}`);
                     const data = await response.json();
                     
-                    // Update weather conditions
-                    appState.conditions.temperature = 
-Math.round(data.main.temp);
-                    appState.conditions.windSpeed = 
-Math.round(data.wind.speed);
-                    appState.conditions.windDirection = data.wind.deg 
-|| 0;
-                    
-                    this.lastUpdate = now;
-                    updateStatus('wxStatus', true);
-                    
-                    // Recalculate adjustments with new weather
-                    calculateAdjustments();
-                    updateUI();
+                    if (data.main) {
+                        appState.conditions.temperature = Math.round(data.main.temp);
+                        appState.conditions.windSpeed = Math.round(data.wind?.speed || 5);
+                        appState.conditions.windDirection = data.wind?.deg || 180;
+                        
+                        this.lastUpdate = now;
+                        updateStatus('wxStatus', true);
+                        
+                        calculateAdjustments();
+                        updateUI();
+                    }
                     
                 } catch (error) {
                     console.error('Weather service error:', error);
@@ -1661,31 +1523,24 @@ Math.round(data.wind.speed);
             }
             
             updateSimulatedWeather() {
-                // Simulate realistic weather variations
                 const baseTemp = 70;
                 const baseWind = 8;
                 const baseDirection = 225; // SW wind
                 
-                appState.conditions.temperature = baseTemp + 
-(Math.random() - 0.5) * 20;
-                appState.conditions.windSpeed = Math.max(0, baseWind + 
-(Math.random() - 0.5) * 10);
-                appState.conditions.windDirection = (baseDirection + 
-(Math.random() - 0.5) * 90) % 360;
+                appState.conditions.temperature = baseTemp + (Math.random() - 0.5) * 20;
+                appState.conditions.windSpeed = Math.max(0, baseWind + (Math.random() - 0.5) * 10);
+                appState.conditions.windDirection = (baseDirection + (Math.random() - 0.5) * 90) % 360;
                 
                 updateStatus('wxStatus', true);
             }
         }
         
-        // Wind Analysis Service
+        // Wind Analysis Service with Real Direction Calculation
         class WindAnalysisService {
             calculateWindImpact() {
-                if (!appState.location.current || 
-!appState.location.pin) {
+                if (!appState.location.current || !appState.location.pin) {
                     appState.conditions.windType = 'unknown';
-                    appState.conditions.windAdjustment = 
-Math.round(appState.conditions.windSpeed * 0.3 * (Math.random() > 0.5 
-? -1 : 1));
+                    appState.conditions.windAdjustment = Math.round(appState.conditions.windSpeed * 0.3 * (Math.random() > 0.5 ? -1 : 1));
                     return;
                 }
                 
@@ -1698,8 +1553,11 @@ Math.round(appState.conditions.windSpeed * 0.3 * (Math.random() > 0.5
                 );
                 
                 // Calculate relative wind direction
-                const relativeWindAngle = 
-this.normalizeAngle(appState.conditions.windDirection - shotBearing);
+                const relativeWindAngle = this.normalizeAngle(appState.conditions.windDirection - shotBearing);
+                
+                console.log(`Shot bearing: ${shotBearing.toFixed(1)}°`);
+                console.log(`Wind direction: ${appState.conditions.windDirection}°`);
+                console.log(`Relative wind angle: ${relativeWindAngle.toFixed(1)}°`);
                 
                 // Determine wind type and impact
                 this.categorizeWind(relativeWindAngle);
@@ -1713,8 +1571,7 @@ this.normalizeAngle(appState.conditions.windDirection - shotBearing);
                 
                 const y = Math.sin(dLng) * Math.cos(lat2Rad);
                 const x = Math.cos(lat1Rad) * Math.sin(lat2Rad) - 
-                         Math.sin(lat1Rad) * Math.cos(lat2Rad) * 
-Math.cos(dLng);
+                         Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLng);
                 
                 const bearing = Math.atan2(y, x) * 180 / Math.PI;
                 return this.normalizeAngle(bearing);
@@ -1727,15 +1584,15 @@ Math.cos(dLng);
             categorizeWind(relativeAngle) {
                 if (relativeAngle >= 315 || relativeAngle <= 45) {
                     appState.conditions.windType = 'tailwind';
-                } else if (relativeAngle >= 135 && relativeAngle <= 
-225) {
+                } else if (relativeAngle >= 135 && relativeAngle <= 225) {
                     appState.conditions.windType = 'headwind';
-                } else if (relativeAngle > 45 && relativeAngle < 135) 
-{
+                } else if (relativeAngle > 45 && relativeAngle < 135) {
                     appState.conditions.windType = 'crosswind-right';
                 } else {
                     appState.conditions.windType = 'crosswind-left';
                 }
+                
+                console.log(`Wind type: ${appState.conditions.windType}`);
             }
             
             calculateWindAdjustment(relativeAngle) {
@@ -1743,24 +1600,22 @@ Math.cos(dLng);
                 let adjustment = 0;
                 
                 // Calculate component of wind affecting distance
-                const headwindComponent = Math.cos(relativeAngle * 
-Math.PI / 180);
-                const crosswindComponent = 
-Math.abs(Math.sin(relativeAngle * Math.PI / 180));
+                const headwindComponent = Math.cos(relativeAngle * Math.PI / 180);
+                const crosswindComponent = Math.abs(Math.sin(relativeAngle * Math.PI / 180));
                 
-                // Headwind/tailwind impact (affects distance 
-significantly)
-                adjustment += headwindComponent * windSpeed * -0.4; // 
-Negative for headwind
+                // Headwind/tailwind impact (affects distance significantly)
+                adjustment += headwindComponent * windSpeed * -0.4; // Negative for headwind
                 
-                // Crosswind impact (minimal distance effect, mainly 
-accuracy)
+                // Crosswind impact (minimal distance effect)
                 adjustment += crosswindComponent * windSpeed * -0.1;
                 
-                appState.conditions.windAdjustment = 
-Math.round(adjustment);
+                appState.conditions.windAdjustment = Math.round(adjustment);
+                
+                console.log(`Wind adjustment: ${appState.conditions.windAdjustment} yards`);
             }
         }
+        
+        // Secure Google Maps Integration
         class SecureGoogleMaps {
             constructor() {
                 this.map = null;
@@ -1771,19 +1626,14 @@ Math.round(adjustment);
             
             async initialize() {
                 try {
-                    // Check if API key is configured
-                    if (CONFIG.googleMapsApiKey === 
-'YOUR_GOOGLE_MAPS_API_KEY_HERE') {
-                        throw new Error('Google Maps API key not 
-configured');
+                    if (CONFIG.googleMapsApiKey === 'YOUR_GOOGLE_MAPS_API_KEY_HERE') {
+                        throw new Error('Google Maps API key not configured');
                     }
                     
-                    // Load Google Maps API
                     await this.loadMapsAPI();
                     return true;
                 } catch (error) {
-                    console.error('Maps initialization failed:', 
-error);
+                    console.error('Maps initialization failed:', error);
                     this.showMapsError();
                     return false;
                 }
@@ -1797,8 +1647,7 @@ error);
                     }
                     
                     const script = document.createElement('script');
-                    script.src = 
-`https://maps.googleapis.com/maps/api/js?key=${CONFIG.googleMapsApiKey}&libraries=geometry&loading=async`;
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=${CONFIG.googleMapsApiKey}&libraries=geometry&loading=async`;
                     script.async = true;
                     script.defer = true;
                     script.onload = resolve;
@@ -1812,8 +1661,7 @@ error);
                     throw new Error('User location required');
                 }
                 
-                const mapContainer = 
-document.getElementById(containerId);
+                const mapContainer = document.getElementById(containerId);
                 
                 this.map = new google.maps.Map(mapContainer, {
                     center: { 
@@ -1865,8 +1713,7 @@ document.getElementById(containerId);
                     draggable: true,
                     title: 'Pin Location',
                     icon: {
-                        path: 'M12,2C8.13,2 5,5.13 5,9C5,14.25 12,22 
-12,22C12,22 19,14.25 19,9C19,5.13 15.87,2 12,2Z',
+                        path: 'M12,2C8.13,2 5,5.13 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9C19,5.13 15.87,2 12,2Z',
                         fillColor: '#ea4335',
                         fillOpacity: 1,
                         strokeWeight: 1,
@@ -1886,8 +1733,7 @@ document.getElementById(containerId);
                     };
                     
                     this.calculateDistance();
-                    document.getElementById('confirmPinBtn').disabled 
-= false;
+                    document.getElementById('confirmPinBtn').disabled = false;
                 });
                 
                 this.pinMarker.addListener('drag', () => {
@@ -1896,8 +1742,7 @@ document.getElementById(containerId);
             }
             
             calculateDistance() {
-                if (!appState.location.current || 
-!appState.location.pin) return;
+                if (!appState.location.current || !appState.location.pin) return;
                 
                 const from = new google.maps.LatLng(
                     appState.location.current.lat, 
@@ -1908,36 +1753,25 @@ document.getElementById(containerId);
                     appState.location.pin.lng
                 );
                 
-                const distance = 
-google.maps.geometry.spherical.computeDistanceBetween(from, to);
+                const distance = google.maps.geometry.spherical.computeDistanceBetween(from, to);
                 const yards = Math.round(distance * 1.09361);
                 
                 appState.distance.raw = yards;
                 
                 // Update elevations and recalculate adjustments
                 elevationService.updateElevations().then(() => {
+                    // Calculate wind impact after elevation is updated
+                    windAnalysis.calculateWindImpact();
                     calculateAdjustments();
                     updateUI();
                 });
-                
-                // Update display in modal (if exists)
-                const distanceDisplay = 
-document.querySelector('.maps-info .maps-distance');
-                if (distanceDisplay) {
-                    distanceDisplay.textContent = 
-`${convertDistance(yards)} ${getDistanceUnit()} to pin`;
-                }
             }
             
             showMapsError() {
-                document.getElementById('mapsLoading').style.display = 
-'none';
-                document.getElementById('mapsError').style.display = 
-'flex';
+                document.getElementById('mapsLoading').style.display = 'none';
+                document.getElementById('mapsError').style.display = 'flex';
                 
-                // Update placeholder text based on units
-                const input = 
-document.getElementById('fallbackDistance');
+                const input = document.getElementById('fallbackDistance');
                 input.placeholder = `Distance (${getDistanceUnit()})`;
             }
         }
@@ -1953,22 +1787,17 @@ document.getElementById('fallbackDistance');
             
             async initialize() {
                 try {
-                    this.video = 
-document.getElementById('cameraVideo');
-                    this.canvas = 
-document.getElementById('cameraCanvas');
+                    this.video = document.getElementById('cameraVideo');
+                    this.canvas = document.getElementById('cameraCanvas');
                     this.context = this.canvas.getContext('2d');
                     
-                    // Check camera support
-                    if (!navigator.mediaDevices || 
-!navigator.mediaDevices.getUserMedia) {
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                         throw new Error('Camera not supported');
                     }
                     
                     return true;
                 } catch (error) {
-                    console.error('Camera initialization failed:', 
-error);
+                    console.error('Camera initialization failed:', error);
                     this.showCameraError();
                     return false;
                 }
@@ -1978,15 +1807,13 @@ error);
                 try {
                     const constraints = {
                         video: {
-                            facingMode: 'environment', // Back camera 
-preferred
+                            facingMode: 'environment',
                             width: { ideal: 1920, max: 1920 },
                             height: { ideal: 1080, max: 1080 }
                         }
                     };
                     
-                    this.stream = await 
-navigator.mediaDevices.getUserMedia(constraints);
+                    this.stream = await navigator.mediaDevices.getUserMedia(constraints);
                     this.video.srcObject = this.stream;
                     
                     return new Promise((resolve) => {
@@ -2006,25 +1833,17 @@ navigator.mediaDevices.getUserMedia(constraints);
             }
             
             showCamera() {
-                document.getElementById('cameraVideo').style.display = 
-'block';
-                document.getElementById('cameraOverlay').style.display 
-= 'flex';
-                
-document.getElementById('cameraControls').style.display = 'flex';
-                document.getElementById('cameraError').style.display = 
-'none';
+                document.getElementById('cameraVideo').style.display = 'block';
+                document.getElementById('cameraOverlay').style.display = 'flex';
+                document.getElementById('cameraControls').style.display = 'flex';
+                document.getElementById('cameraError').style.display = 'none';
             }
             
             showCameraError() {
-                document.getElementById('cameraVideo').style.display = 
-'none';
-                document.getElementById('cameraOverlay').style.display 
-= 'none';
-                
-document.getElementById('cameraControls').style.display = 'none';
-                document.getElementById('cameraError').style.display = 
-'flex';
+                document.getElementById('cameraVideo').style.display = 'none';
+                document.getElementById('cameraOverlay').style.display = 'none';
+                document.getElementById('cameraControls').style.display = 'none';
+                document.getElementById('cameraError').style.display = 'flex';
             }
             
             async capturePhoto() {
@@ -2032,14 +1851,11 @@ document.getElementById('cameraControls').style.display = 'none';
                     throw new Error('Camera not initialized');
                 }
                 
-                // Set canvas size to video size
                 this.canvas.width = this.video.videoWidth;
                 this.canvas.height = this.video.videoHeight;
                 
-                // Draw video frame to canvas
                 this.context.drawImage(this.video, 0, 0);
                 
-                // Convert to blob for processing
                 return new Promise((resolve) => {
                     this.canvas.toBlob((blob) => {
                         resolve(blob);
@@ -2049,8 +1865,7 @@ document.getElementById('cameraControls').style.display = 'none';
             
             stopCamera() {
                 if (this.stream) {
-                    this.stream.getTracks().forEach(track => 
-track.stop());
+                    this.stream.getTracks().forEach(track => track.stop());
                     this.stream = null;
                 }
                 
@@ -2060,7 +1875,7 @@ track.stop());
             }
         }
         
-        // Secure Image Analysis
+        // Image Analysis
         class ImageAnalyzer {
             constructor() {
                 this.maxFileSize = CONFIG.security.maxImageSize;
@@ -2069,13 +1884,11 @@ track.stop());
             
             validateImage(file) {
                 if (file.size > this.maxFileSize) {
-                    throw new Error('Image file too large (max 
-10MB)');
+                    throw new Error('Image file too large (max 10MB)');
                 }
                 
                 if (!this.allowedTypes.includes(file.type)) {
-                    throw new Error('Invalid image type. Please use 
-JPEG, PNG, or WebP');
+                    throw new Error('Invalid image type. Please use JPEG, PNG, or WebP');
                 }
                 
                 return true;
@@ -2083,15 +1896,12 @@ JPEG, PNG, or WebP');
             
             async analyzeImage(imageBlob) {
                 try {
-                    // Validate image
                     this.validateImage(imageBlob);
                     
-                    // In development, simulate analysis
                     if (CONFIG.isDevelopment) {
                         return this.simulateAnalysis();
                     }
                     
-                    // Production: Send to ML API
                     return await this.sendToMLAPI(imageBlob);
                 } catch (error) {
                     console.error('Image analysis failed:', error);
@@ -2103,8 +1913,7 @@ JPEG, PNG, or WebP');
                 const formData = new FormData();
                 formData.append('image', imageBlob);
                 
-                const response = await 
-fetch(CONFIG.endpoints.analyzeImage, {
+                const response = await fetch(CONFIG.endpoints.analyzeImage, {
                     method: 'POST',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
@@ -2123,20 +1932,14 @@ fetch(CONFIG.endpoints.analyzeImage, {
                 return new Promise((resolve) => {
                     setTimeout(() => {
                         const lies = [
-                            { type: 'fairway', penalty: 0, name: 
-'Fairway', confidence: 95 },
-                            { type: 'first_cut', penalty: -3, name: 
-'First Cut', confidence: 88 },
-                            { type: 'rough', penalty: -8, name: 
-'Primary Rough', confidence: 92 },
-                            { type: 'heavy_rough', penalty: -15, name: 
-'Heavy Rough', confidence: 85 },
-                            { type: 'bunker', penalty: -12, name: 
-'Greenside Bunker', confidence: 97 }
+                            { type: 'fairway', penalty: 0, name: 'Fairway', confidence: 95 },
+                            { type: 'first_cut', penalty: -3, name: 'First Cut', confidence: 88 },
+                            { type: 'rough', penalty: -8, name: 'Primary Rough', confidence: 92 },
+                            { type: 'heavy_rough', penalty: -15, name: 'Heavy Rough', confidence: 85 },
+                            { type: 'bunker', penalty: -12, name: 'Greenside Bunker', confidence: 97 }
                         ];
                         
-                        const result = lies[Math.floor(Math.random() * 
-lies.length)];
+                        const result = lies[Math.floor(Math.random() * lies.length)];
                         resolve(result);
                     }, 2500);
                 });
@@ -2170,11 +1973,17 @@ lies.length)];
                     appState.permissions.location = true;
                     updateStatus('gpsStatus', true);
                     
+                    // Get initial elevation and weather data
+                    await elevationService.updateElevations();
+                    await weatherService.getCurrentWeather(
+                        appState.location.current.lat,
+                        appState.location.current.lng
+                    );
+                    
                     this.startWatching();
                     return true;
                 } catch (error) {
-                    console.error('Location permission denied:', 
-error);
+                    console.error('Location permission denied:', error);
                     appState.permissions.location = false;
                     updateStatus('gpsStatus', false);
                     throw error;
@@ -2183,8 +1992,7 @@ error);
             
             getCurrentPosition(options) {
                 return new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, 
-reject, options);
+                    navigator.geolocation.getCurrentPosition(resolve, reject, options);
                 });
             }
             
@@ -2222,23 +2030,18 @@ reject, options);
             }
             
             calculateDistance() {
-                if (!appState.location.current || 
-!appState.location.pin) return;
+                if (!appState.location.current || !appState.location.pin) return;
                 
                 const R = 6371e3; // Earth radius
-                const φ1 = appState.location.current.lat * 
-Math.PI/180;
+                const φ1 = appState.location.current.lat * Math.PI/180;
                 const φ2 = appState.location.pin.lat * Math.PI/180;
-                const Δφ = (appState.location.pin.lat - 
-appState.location.current.lat) * Math.PI/180;
-                const Δλ = (appState.location.pin.lng - 
-appState.location.current.lng) * Math.PI/180;
+                const Δφ = (appState.location.pin.lat - appState.location.current.lat) * Math.PI/180;
+                const Δλ = (appState.location.pin.lng - appState.location.current.lng) * Math.PI/180;
                 
                 const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
                           Math.cos(φ1) * Math.cos(φ2) *
                           Math.sin(Δλ/2) * Math.sin(Δλ/2);
-                const c = 2 * Math.atan2(Math.sqrt(a), 
-Math.sqrt(1-a));
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                 
                 appState.distance.raw = Math.round(R * c * 1.09361);
                 calculateAdjustments();
@@ -2264,7 +2067,10 @@ Math.sqrt(1-a));
         
         // Initialize App
         window.addEventListener('DOMContentLoaded', function() {
-            console.log('CaddAIe Starting - Production Ready Mode');
+            console.log('CaddAIe V12 Starting - Production Ready Mode');
+            
+            // Load user preferences
+            loadUnitPreference();
             
             // Initialize core functionality
             populateClubList();
@@ -2280,60 +2086,19 @@ Math.sqrt(1-a));
         
         // Permission Management
         async function requestInitialPermissions() {
-            // Show permission modal for location
-            showPermissionModal('location');
-        }
-        
-        function showPermissionModal(type) {
-            const modal = document.getElementById('permissionModal');
-            const title = document.getElementById('permissionTitle');
-            const text = document.getElementById('permissionText');
-            
-            if (type === 'location') {
-                title.textContent = 'Location Access Required';
-                text.textContent = 'CaddAIe needs access to your 
-location to calculate accurate distances to the pin. Your location 
-data is only used locally and never shared.';
-            } else if (type === 'camera') {
-                title.textContent = 'Camera Access Required';
-                text.textContent = 'CaddAIe needs camera access to 
-analyze your ball lie. Photos are processed locally and never stored 
-or shared.';
-            }
-            
-            modal.style.display = 'flex';
-        }
-        
-        async function requestPermission() {
-            const modal = document.getElementById('permissionModal');
-            modal.style.display = 'none';
-            
             try {
                 await locationService.requestPermission();
                 showNotification('GPS location enabled');
             } catch (error) {
-                showNotification('Location access denied - Manual 
-entry available');
-                // Enable fallback options
+                showNotification('Location access needed for accurate distances');
                 enableFallbackMode();
             }
         }
         
-        function denyPermission() {
-            document.getElementById('permissionModal').style.display = 
-'none';
-            enableFallbackMode();
-            showNotification('Manual distance entry enabled');
-        }
-        
         function enableFallbackMode() {
-            // Disable GPS-dependent features, enable manual 
-alternatives
             document.getElementById('setPinBtn').innerHTML = `
-                <svg class="action-icon" viewBox="0 0 24 24" 
-fill="none">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 
-2h14a2 2 0 0 0 2-2v-7"/>
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                     <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                 </svg>
                 Manual Entry
@@ -2342,8 +2107,7 @@ fill="none">
         
         // Maps Integration
         async function openMaps() {
-            document.getElementById('mapsModal').style.display = 
-'flex';
+            document.getElementById('mapsModal').style.display = 'flex';
             
             if (!appState.permissions.location) {
                 maps.showMapsError();
@@ -2352,14 +2116,12 @@ fill="none">
             
             try {
                 if (!maps.loaded) {
-                    
-document.getElementById('mapsLoading').style.display = 'flex';
+                    document.getElementById('mapsLoading').style.display = 'flex';
                     const initialized = await maps.initialize();
                     
                     if (initialized) {
                         await maps.createMap('mapsContainer');
-                        
-document.getElementById('mapsLoading').style.display = 'none';
+                        document.getElementById('mapsLoading').style.display = 'none';
                     }
                 }
             } catch (error) {
@@ -2369,8 +2131,7 @@ document.getElementById('mapsLoading').style.display = 'none';
         }
         
         function closeMaps() {
-            document.getElementById('mapsModal').style.display = 
-'none';
+            document.getElementById('mapsModal').style.display = 'none';
         }
         
         function confirmPin() {
@@ -2378,17 +2139,14 @@ document.getElementById('mapsLoading').style.display = 'none';
                 locationService.calculateDistance();
                 updateClubRecommendation();
                 generateCaddieAdvice();
-                showNotification(`Pin location confirmed - 
-${convertDistance(appState.distance.raw)} ${getDistanceUnit()}`);
+                showNotification(`Pin location confirmed - ${convertDistance(appState.distance.raw)} ${getDistanceUnit()}`);
             }
             closeMaps();
         }
         
         function setManualDistance() {
-            let distance = 
-parseInt(document.getElementById('fallbackDistance').value);
+            let distance = parseInt(document.getElementById('fallbackDistance').value);
             
-            // If metric input, convert to yards for internal storage
             if (appState.useMetric) {
                 distance = Math.round(distance / 0.9144);
             }
@@ -2401,26 +2159,19 @@ parseInt(document.getElementById('fallbackDistance').value);
                 updateClubRecommendation();
                 generateCaddieAdvice();
                 closeMaps();
-                showNotification(`Distance set to 
-${convertDistance(distance)} ${getDistanceUnit()}`);
+                showNotification(`Distance set to ${convertDistance(distance)} ${getDistanceUnit()}`);
             } else {
-                const maxDistance = appState.useMetric ? 457 : 500; // 
-~500 yards in meters
-                showNotification(`Please enter a valid distance 
-(1-${maxDistance} ${getDistanceUnit()})`);
+                const maxDistance = appState.useMetric ? 457 : 500;
+                showNotification(`Please enter a valid distance (1-${maxDistance} ${getDistanceUnit()})`);
             }
         }
         
         // Camera Integration
         async function openCamera() {
-            document.getElementById('cameraModal').style.display = 
-'flex';
-            document.getElementById('analysisResults').style.display = 
-'none';
-            document.getElementById('cameraButtons').style.display = 
-'grid';
-            document.getElementById('analysisButtons').style.display = 
-'none';
+            document.getElementById('cameraModal').style.display = 'flex';
+            document.getElementById('analysisResults').style.display = 'none';
+            document.getElementById('cameraButtons').style.display = 'grid';
+            document.getElementById('analysisButtons').style.display = 'none';
             
             try {
                 const initialized = await camera.initialize();
@@ -2439,8 +2190,7 @@ ${convertDistance(distance)} ${getDistanceUnit()}`);
         
         function closeCamera() {
             camera.stopCamera();
-            document.getElementById('cameraModal').style.display = 
-'none';
+            document.getElementById('cameraModal').style.display = 'none';
         }
         
         async function capturePhoto() {
@@ -2455,8 +2205,7 @@ ${convertDistance(distance)} ${getDistanceUnit()}`);
             } catch (error) {
                 console.error('Capture error:', error);
                 showNotification('Analysis failed - Try again');
-                document.getElementById('captureBtn').disabled = 
-false;
+                document.getElementById('captureBtn').disabled = false;
             }
         }
         
@@ -2468,40 +2217,29 @@ false;
                 .then(displayAnalysisResults)
                 .catch(error => {
                     console.error('File analysis error:', error);
-                    showNotification('Analysis failed - Try another 
-image');
+                    showNotification('Analysis failed - Try another image');
                 });
         }
         
         function displayAnalysisResults(result) {
-            document.getElementById('analyzedLie').textContent = 
-result.name;
+            document.getElementById('analyzedLie').textContent = result.name;
             document.getElementById('analyzedPenalty').textContent = 
-                result.penalty ? 
-`${convertDistance(Math.abs(result.penalty))} ${getDistanceUnit()}` : 
-'No penalty';
-            document.getElementById('analyzedConfidence').textContent 
-= `${result.confidence}%`;
+                result.penalty ? `${convertDistance(Math.abs(result.penalty))} ${getDistanceUnit()}` : 'No penalty';
+            document.getElementById('analyzedConfidence').textContent = `${result.confidence}%`;
             
             appState.detectedLie = result;
             
-            document.getElementById('analysisResults').style.display = 
-'block';
-            document.getElementById('cameraButtons').style.display = 
-'none';
-            document.getElementById('analysisButtons').style.display = 
-'grid';
+            document.getElementById('analysisResults').style.display = 'block';
+            document.getElementById('cameraButtons').style.display = 'none';
+            document.getElementById('analysisButtons').style.display = 'grid';
             
             showNotification('Lie analysis complete');
         }
         
         function retakePhoto() {
-            document.getElementById('analysisResults').style.display = 
-'none';
-            document.getElementById('cameraButtons').style.display = 
-'grid';
-            document.getElementById('analysisButtons').style.display = 
-'none';
+            document.getElementById('analysisResults').style.display = 'none';
+            document.getElementById('cameraButtons').style.display = 'grid';
+            document.getElementById('analysisButtons').style.display = 'none';
             document.getElementById('captureBtn').disabled = false;
         }
         
@@ -2513,8 +2251,7 @@ result.name;
                 updateClubRecommendation();
                 generateCaddieAdvice();
                 closeCamera();
-                showNotification(`Lie updated: 
-${appState.detectedLie.name}`);
+                showNotification(`Lie updated: ${appState.detectedLie.name}`);
             }
         }
         
@@ -2528,8 +2265,7 @@ ${appState.detectedLie.name}`);
                 item.classList.remove('active');
             });
             
-            document.getElementById(pageName + 
-'Page').classList.add('active');
+            document.getElementById(pageName + 'Page').classList.add('active');
             event.target.closest('.nav-item').classList.add('active');
             
             appState.currentPage = pageName;
@@ -2539,8 +2275,7 @@ ${appState.detectedLie.name}`);
         let currentEditField = null;
         
         function editDistance() {
-            openInput(`Distance (${getDistanceUnit()})`, 
-convertDistance(appState.distance.adjusted), 'distance');
+            openInput(`Distance (${getDistanceUnit()})`, convertDistance(appState.distance.adjusted), 'distance');
         }
         
         function editValue(type) {
@@ -2548,18 +2283,15 @@ convertDistance(appState.distance.adjusted), 'distance');
             
             switch(type) {
                 case 'temp':
-                    value = 
-convertTemperature(appState.conditions.temperature);
+                    value = convertTemperature(appState.conditions.temperature);
                     title = `Temperature (${getTempUnit()})`;
                     break;
                 case 'wind':
-                    value = 
-convertWindSpeed(appState.conditions.windSpeed);
+                    value = convertWindSpeed(appState.conditions.windSpeed);
                     title = `Wind Speed (${getWindUnit()})`;
                     break;
                 case 'elevation':
-                    value = 
-convertElevation(appState.conditions.elevation);
+                    value = convertElevation(appState.conditions.elevation);
                     title = `Elevation (${getElevationUnit()})`;
                     break;
             }
@@ -2568,15 +2300,13 @@ convertElevation(appState.conditions.elevation);
         }
         
         function editClubDistance(clubName) {
-            openInput(`${clubName} Distance (${getDistanceUnit()})`, 
-convertDistance(appState.clubs[clubName]), 'club', clubName);
+            openInput(`${clubName} Distance (${getDistanceUnit()})`, convertDistance(appState.clubs[clubName]), 'club', clubName);
         }
         
         function openInput(title, value, field, extra = null) {
             document.getElementById('inputTitle').textContent = title;
             document.getElementById('inputField').value = value;
-            document.getElementById('inputModal').style.display = 
-'flex';
+            document.getElementById('inputModal').style.display = 'flex';
             currentEditField = { field, extra };
             
             setTimeout(() => {
@@ -2587,14 +2317,12 @@ convertDistance(appState.clubs[clubName]), 'club', clubName);
         }
         
         function closeInput() {
-            document.getElementById('inputModal').style.display = 
-'none';
+            document.getElementById('inputModal').style.display = 'none';
             currentEditField = null;
         }
         
         function saveInput() {
-            let value = 
-parseFloat(document.getElementById('inputField').value);
+            let value = parseFloat(document.getElementById('inputField').value);
             if (isNaN(value) || !currentEditField) return;
             
             const { field, extra } = currentEditField;
@@ -2602,32 +2330,27 @@ parseFloat(document.getElementById('inputField').value);
             // Convert from display units to internal storage units
             switch(field) {
                 case 'distance':
-                    if (appState.useMetric) value = Math.round(value / 
-0.9144); // Convert meters to yards
+                    if (appState.useMetric) value = Math.round(value / 0.9144);
                     appState.distance.manual = value;
                     appState.distance.adjusted = value;
                     break;
                 case 'temp':
-                    if (appState.useMetric) value = Math.round(value * 
-9/5 + 32); // Convert Celsius to Fahrenheit
+                    if (appState.useMetric) value = Math.round(value * 9/5 + 32);
                     appState.conditions.temperature = value;
                     calculateAdjustments();
                     break;
                 case 'wind':
-                    if (appState.useMetric) value = Math.round(value / 
-1.60934); // Convert km/h to mph
+                    if (appState.useMetric) value = Math.round(value / 1.60934);
                     appState.conditions.windSpeed = value;
                     calculateAdjustments();
                     break;
                 case 'elevation':
-                    if (appState.useMetric) value = Math.round(value / 
-0.3048); // Convert meters to feet
+                    if (appState.useMetric) value = Math.round(value / 0.3048);
                     appState.conditions.elevation = value;
                     calculateAdjustments();
                     break;
                 case 'club':
-                    if (appState.useMetric) value = Math.round(value / 
-0.9144); // Convert meters to yards
+                    if (appState.useMetric) value = Math.round(value / 0.9144);
                     appState.clubs[extra] = value;
                     populateClubList();
                     updateClubRecommendation();
@@ -2643,33 +2366,25 @@ parseFloat(document.getElementById('inputField').value);
         
         // Calculations
         function calculateAdjustments() {
-            const { temperature, windSpeed, elevation } = 
-appState.conditions;
+            const { temperature, windSpeed, elevation } = appState.conditions;
             
             // Temperature adjustment (baseline 77°F)
-            appState.conditions.tempAdjustment = Math.round((77 - 
-temperature) * 0.15);
+            appState.conditions.tempAdjustment = Math.round((77 - temperature) * 0.15);
             
             // Wind adjustment using new wind analysis
             windAnalysis.calculateWindImpact();
             
-            // Elevation adjustment (1 yard per 3 feet of elevation 
-change)
-            appState.conditions.elevAdjustment = Math.round(elevation 
-/ 3);
+            // Elevation adjustment (1 yard per 3 feet of elevation change)
+            appState.conditions.elevAdjustment = Math.round(elevation / 3);
             
             // Update total distance if not manually set
             if (!appState.distance.manual) {
-                const totalAdjustment = 
-appState.conditions.tempAdjustment + 
-                                       
-appState.conditions.windAdjustment + 
-                                       
-appState.conditions.elevAdjustment + 
+                const totalAdjustment = appState.conditions.tempAdjustment + 
+                                       appState.conditions.windAdjustment + 
+                                       appState.conditions.elevAdjustment + 
                                        appState.lie.penalty;
                 
-                appState.distance.adjusted = Math.max(50, 
-appState.distance.raw + totalAdjustment);
+                appState.distance.adjusted = Math.max(50, appState.distance.raw + totalAdjustment);
             }
         }
         
@@ -2678,15 +2393,12 @@ appState.distance.raw + totalAdjustment);
             const clubList = document.getElementById('clubList');
             clubList.innerHTML = '';
             
-            Object.entries(appState.clubs).forEach(([club, distance]) 
-=> {
+            Object.entries(appState.clubs).forEach(([club, distance]) => {
                 const item = document.createElement('div');
                 item.className = 'club-item';
                 item.innerHTML = `
                     <div class="club-name-label">${club}</div>
-                    <div class="club-distance" 
-onclick="editClubDistance('${club}')">${convertDistance(distance)} 
-${getDistanceUnit()}</div>
+                    <div class="club-distance" onclick="editClubDistance('${club}')">${convertDistance(distance)} ${getDistanceUnit()}</div>
                 `;
                 clubList.appendChild(item);
             });
@@ -2697,8 +2409,7 @@ ${getDistanceUnit()}</div>
             let bestClub = '';
             let bestDiff = Infinity;
             
-            Object.entries(appState.clubs).forEach(([club, distance]) 
-=> {
+            Object.entries(appState.clubs).forEach(([club, distance]) => {
                 const diff = Math.abs(distance - targetDistance);
                 if (diff < bestDiff) {
                     bestClub = club;
@@ -2706,18 +2417,14 @@ ${getDistanceUnit()}</div>
                 }
             });
             
-            document.getElementById('recommendedClub').textContent = 
-bestClub;
+            document.getElementById('recommendedClub').textContent = bestClub;
             document.getElementById('clubConfidence').textContent = 
-                `Based on your 
-${convertDistance(appState.clubs[bestClub])} ${getDistanceUnit()} 
-average`;
+                `Based on your ${convertDistance(appState.clubs[bestClub])} ${getDistanceUnit()} average`;
         }
         
         // AI Caddie Advice Generator
         function generateCaddieAdvice() {
-            const { elevation, windSpeed, temperature, tempAdjustment, 
-windAdjustment, elevAdjustment } = appState.conditions;
+            const { elevation, windSpeed, temperature, tempAdjustment, windAdjustment, elevAdjustment } = appState.conditions;
             const lie = appState.lie;
             
             let advice = [];
@@ -2725,33 +2432,22 @@ windAdjustment, elevAdjustment } = appState.conditions;
             // Elevation advice
             if (Math.abs(elevation) > 10) {
                 if (elevation > 0) {
-                    advice.push(`Playing 
-${convertElevation(Math.abs(elevation))} ${getElevationUnit()} 
-uphill`);
+                    advice.push(`Playing ${convertElevation(Math.abs(elevation))} ${getElevationUnit()} uphill`);
                 } else {
-                    advice.push(`Playing 
-${convertElevation(Math.abs(elevation))} ${getElevationUnit()} 
-downhill`);
+                    advice.push(`Playing ${convertElevation(Math.abs(elevation))} ${getElevationUnit()} downhill`);
                 }
             }
             
             // Wind advice with specific direction
             if (windSpeed > 8) {
                 const windAdviceMap = {
-                    'headwind': `${convertWindSpeed(windSpeed)} 
-${getWindUnit()} headwind`,
-                    'tailwind': `${convertWindSpeed(windSpeed)} 
-${getWindUnit()} tailwind`, 
-                    'crosswind-left': `${convertWindSpeed(windSpeed)} 
-${getWindUnit()} crosswind from left`,
-                    'crosswind-right': `${convertWindSpeed(windSpeed)} 
-${getWindUnit()} crosswind from right`,
-                    'unknown': `${convertWindSpeed(windSpeed)} 
-${getWindUnit()} variable wind`
+                    'headwind': `${convertWindSpeed(windSpeed)} ${getWindUnit()} headwind`,
+                    'tailwind': `${convertWindSpeed(windSpeed)} ${getWindUnit()} tailwind`, 
+                    'crosswind-left': `${convertWindSpeed(windSpeed)} ${getWindUnit()} crosswind from left`,
+                    'crosswind-right': `${convertWindSpeed(windSpeed)} ${getWindUnit()} crosswind from right`,
+                    'unknown': `${convertWindSpeed(windSpeed)} ${getWindUnit()} variable wind`
                 };
-                
-advice.push(windAdviceMap[appState.conditions.windType] || 'windy 
-conditions');
+                advice.push(windAdviceMap[appState.conditions.windType] || 'windy conditions');
             }
             
             // Temperature advice
@@ -2763,141 +2459,95 @@ conditions');
             
             // Club recommendation logic
             let clubAdvice = '';
-            const totalAdjustment = elevAdjustment + windAdjustment + 
-tempAdjustment;
+            const totalAdjustment = elevAdjustment + windAdjustment + tempAdjustment;
             
             if (totalAdjustment > 5) {
                 clubAdvice = 'Club down and swing smooth';
             } else if (totalAdjustment < -5) {
                 clubAdvice = 'Club up and focus on solid contact';
             } else if (windSpeed > 12) {
-                clubAdvice = 'Focus on a lower ball flight to cut 
-through the wind';
+                if (appState.conditions.windType === 'headwind') {
+                    clubAdvice = 'Focus on a lower ball flight to cut through the wind';
+                } else if (appState.conditions.windType === 'tailwind') {
+                    clubAdvice = 'Let the wind help - normal swing';
+                } else {
+                    clubAdvice = 'Aim into the crosswind and commit';
+                }
             } else if (lie.penalty < -5) {
-                clubAdvice = 'Expect less distance from this lie - 
-swing aggressively';
+                clubAdvice = 'Expect less distance from this lie - swing aggressively';
             } else {
-                clubAdvice = 'Trust your yardage and commit to the 
-shot';
+                clubAdvice = 'Trust your yardage and commit to the shot';
             }
             
             // Combine advice
             let fullAdvice = '';
             if (advice.length > 0) {
-                fullAdvice = advice.join(', ') + '. ' + clubAdvice + 
-'.';
+                fullAdvice = advice.join(', ') + '. ' + clubAdvice + '.';
             } else {
-                fullAdvice = 'Perfect conditions. ' + clubAdvice + 
-'.';
+                fullAdvice = 'Perfect conditions. ' + clubAdvice + '.';
             }
             
-            document.getElementById('caddieAdvice').textContent = 
-fullAdvice;
+            document.getElementById('caddieAdvice').textContent = fullAdvice;
         }
         
         // UI Updates
         function updateUI() {
             // Distance display
-            document.getElementById('distanceValue').textContent = 
-convertDistance(appState.distance.adjusted);
-            document.getElementById('distanceUnit').textContent = 
-getDistanceUnit();
-            document.getElementById('rawDistance').textContent = 
-convertDistance(appState.distance.raw);
-            document.getElementById('rawDistanceUnit').textContent = 
-getDistanceWordUnit();
+            document.getElementById('distanceValue').textContent = convertDistance(appState.distance.adjusted);
+            document.getElementById('distanceUnit').textContent = getDistanceUnit();
+            document.getElementById('rawDistance').textContent = convertDistance(appState.distance.raw);
+            document.getElementById('rawDistanceUnit').textContent = getDistanceWordUnit();
             
             // Conditions
-            document.getElementById('tempValue').textContent = 
-`${convertTemperature(appState.conditions.temperature)}${getTempUnit()}`;
-            document.getElementById('windValue').textContent = 
-`${convertWindSpeed(appState.conditions.windSpeed)} ${getWindUnit()}`;
+            document.getElementById('tempValue').textContent = `${convertTemperature(appState.conditions.temperature)}${getTempUnit()}`;
+            document.getElementById('windValue').textContent = `${convertWindSpeed(appState.conditions.windSpeed)} ${getWindUnit()}`;
             document.getElementById('elevValue').textContent = 
-                `${appState.conditions.elevation > 0 ? '+' : 
-''}${convertElevation(appState.conditions.elevation)} 
-${getElevationUnit()}`;
+                `${appState.conditions.elevation > 0 ? '+' : ''}${convertElevation(appState.conditions.elevation)} ${getElevationUnit()}`;
             
             // Condition impacts (always show in current units)
-            const tempAdj = 
-Math.round(appState.conditions.tempAdjustment * (appState.useMetric ? 
-0.9144 : 1));
-            const windAdj = 
-Math.round(appState.conditions.windAdjustment * (appState.useMetric ? 
-0.9144 : 1));
-            const elevAdj = 
-Math.round(appState.conditions.elevAdjustment * (appState.useMetric ? 
-0.9144 : 1));
+            const tempAdj = Math.round(appState.conditions.tempAdjustment * (appState.useMetric ? 0.9144 : 1));
+            const windAdj = Math.round(appState.conditions.windAdjustment * (appState.useMetric ? 0.9144 : 1));
+            const elevAdj = Math.round(appState.conditions.elevAdjustment * (appState.useMetric ? 0.9144 : 1));
             
-            document.getElementById('tempImpact').textContent = 
-tempAdj ? `${tempAdj > 0 ? '+' : ''}${tempAdj}${getDistanceUnit()[0]}` 
-: `0${getDistanceUnit()[0]}`;
-            document.getElementById('windImpact').textContent = 
-windAdj ? `${windAdj > 0 ? '+' : ''}${windAdj}${getDistanceUnit()[0]}` 
-: `0${getDistanceUnit()[0]}`;
-            document.getElementById('elevImpact').textContent = 
-elevAdj ? `${elevAdj > 0 ? '+' : ''}${elevAdj}${getDistanceUnit()[0]}` 
-: `0${getDistanceUnit()[0]}`;
+            document.getElementById('tempImpact').textContent = tempAdj ? `${tempAdj > 0 ? '+' : ''}${tempAdj}${getDistanceUnit()[0]}` : `0${getDistanceUnit()[0]}`;
+            document.getElementById('windImpact').textContent = windAdj ? `${windAdj > 0 ? '+' : ''}${windAdj}${getDistanceUnit()[0]}` : `0${getDistanceUnit()[0]}`;
+            document.getElementById('elevImpact').textContent = elevAdj ? `${elevAdj > 0 ? '+' : ''}${elevAdj}${getDistanceUnit()[0]}` : `0${getDistanceUnit()[0]}`;
             
             // Shot adjustments
-            document.getElementById('elevAdjustment').textContent = 
-elevAdj > 0 ? `+${elevAdj}` : elevAdj || '0';
-            document.getElementById('windAdjustment').textContent = 
-windAdj > 0 ? `+${windAdj}` : windAdj || '0';
-            document.getElementById('tempAdjustment').textContent = 
-tempAdj > 0 ? `+${tempAdj}` : tempAdj || '0';
-            const liePenaltyConverted = 
-Math.round(appState.lie.penalty * (appState.useMetric ? 0.9144 : 1));
-            document.getElementById('lieAdjustment').textContent = 
-liePenaltyConverted > 0 ? `+${liePenaltyConverted}` : 
-liePenaltyConverted || '0';
+            document.getElementById('elevAdjustment').textContent = elevAdj > 0 ? `+${elevAdj}` : elevAdj || '0';
+            document.getElementById('windAdjustment').textContent = windAdj > 0 ? `+${windAdj}` : windAdj || '0';
+            document.getElementById('tempAdjustment').textContent = tempAdj > 0 ? `+${tempAdj}` : tempAdj || '0';
+            const liePenaltyConverted = Math.round(appState.lie.penalty * (appState.useMetric ? 0.9144 : 1));
+            document.getElementById('lieAdjustment').textContent = liePenaltyConverted > 0 ? `+${liePenaltyConverted}` : liePenaltyConverted || '0';
             
             // Descriptions
-            
-document.getElementById('elevationDescription').textContent = 
-                
-`${convertElevation(Math.abs(appState.conditions.elevation))} 
-${getElevationUnit()} ${appState.conditions.elevation > 0 ? 'uphill' : 
-'downhill'}`;
+            document.getElementById('elevationDescription').textContent = 
+                `${convertElevation(Math.abs(appState.conditions.elevation))} ${getElevationUnit()} ${appState.conditions.elevation > 0 ? 'uphill' : 'downhill'}`;
             
             // Wind description with direction
             const windTypeText = {
-                'headwind': 'into wind',
-                'tailwind': 'with wind', 
+                'headwind': 'headwind',
+                'tailwind': 'tailwind', 
                 'crosswind-left': 'crosswind from left',
                 'crosswind-right': 'crosswind from right',
                 'unknown': 'variable wind'
             };
             
             document.getElementById('windDescription').textContent = 
-                `${convertWindSpeed(appState.conditions.windSpeed)} 
-${getWindUnit()} ${windTypeText[appState.conditions.windType] || 
-'variable wind'}`;
-            document.getElementById('tempDescription').textContent = 
-                
-`${convertTemperature(appState.conditions.temperature)}${getTempUnit()} 
-- ${appState.conditions.temperature < 65 ? 'Cold' : 
-appState.conditions.temperature > 85 ? 'Hot' : 'Moderate'} air`;
-            document.getElementById('lieDescription').textContent = 
-                `${appState.lie.name || 'Fairway'} - 
-${appState.lie.penalty ? 'Restricted contact' : 'Clean lie'}`;
+                `${convertWindSpeed(appState.conditions.windSpeed)} ${getWindUnit()} ${windTypeText[appState.conditions.windType] || 'variable wind'}`;
             
-            // Lie display
-            document.getElementById('lieType').textContent = 
-appState.lie.name || 'Fairway';
-            document.getElementById('liePenalty').textContent = 
-                appState.lie.penalty ? 
-`${convertDistance(Math.abs(appState.lie.penalty))}${getDistanceUnit()[0]} 
-penalty` : 'No penalty';
+            document.getElementById('tempDescription').textContent = 
+                `${convertTemperature(appState.conditions.temperature)}${getTempUnit()} - ${appState.conditions.temperature < 65 ? 'Cold' : appState.conditions.temperature > 85 ? 'Hot' : 'Moderate'} air`;
+            document.getElementById('lieDescription').textContent = 
+                `${appState.lie.name || 'Fairway'} - ${appState.lie.penalty ? 'Restricted contact' : 'Clean lie'}`;
             
             // Update colors
             updateAdjustmentColors();
         }
         
         function updateAdjustmentColors() {
-            const impacts = ['tempImpact', 'windImpact', 
-'elevImpact'];
-            const adjustments = ['elevAdjustment', 'windAdjustment', 
-'tempAdjustment', 'lieAdjustment'];
+            const impacts = ['tempImpact', 'windImpact', 'elevImpact'];
+            const adjustments = ['elevAdjustment', 'windAdjustment', 'tempAdjustment', 'lieAdjustment'];
             
             impacts.forEach(id => {
                 const el = document.getElementById(id);
@@ -2930,8 +2580,7 @@ penalty` : 'No penalty';
         
         // Notifications
         function showNotification(message) {
-            document.querySelectorAll('.notification').forEach(n => 
-n.remove());
+            document.querySelectorAll('.notification').forEach(n => n.remove());
             
             const notification = document.createElement('div');
             notification.className = 'notification';
@@ -2967,10 +2616,4 @@ n.remove());
         updateUI();
     </script>
 </body>
-</html>nano 
-index.html    </script>
-</body>
 </html>
-Improve
-Explain
-Enhancing CaddAIe's GPS and UI - Claude
