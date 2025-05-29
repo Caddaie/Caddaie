@@ -123,6 +123,14 @@
             line-height: 1;
             color: var(--primary);
             font-variant-numeric: tabular-nums;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+        
+        .distance-value:hover {
+            background: rgba(0,0,0,0.05);
         }
         
         .distance-unit {
@@ -367,48 +375,6 @@
             color: var(--danger);
         }
         
-        /* Action Grid */
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 20px 0;
-        }
-        
-        .grid-btn {
-            background: var(--light-grey);
-            border: 1px solid var(--border);
-            padding: 20px 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            text-align: center;
-        }
-        
-        .grid-btn:hover {
-            background: var(--med-grey);
-        }
-        
-        .grid-btn-icon {
-            width: 24px;
-            height: 24px;
-            color: var(--text-secondary);
-        }
-        
-        .grid-btn-title {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-        
-        .grid-btn-subtitle {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        
         /* Club recommendation */
         .club-recommendation {
             background: var(--primary);
@@ -435,6 +401,31 @@
         .club-confidence {
             font-size: 13px;
             opacity: 0.7;
+            margin-bottom: 16px;
+        }
+        
+        /* AI Commentary */
+        .ai-commentary {
+            background: rgba(255,255,255,0.1);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+        
+        .commentary-title {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            opacity: 0.7;
+        }
+        
+        .commentary-text {
+            font-size: 14px;
+            line-height: 1.4;
+            font-style: italic;
+            opacity: 0.9;
         }
         
         /* Bottom Navigation */
@@ -528,6 +519,218 @@
             background: var(--light-grey);
         }
         
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 0;
+            margin: 20px;
+            border-radius: 12px;
+            max-width: 380px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            background: var(--light-grey);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        /* Google Maps Modal */
+        .maps-container {
+            height: 400px;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 25%, #fbbc05 50%, #ea4335 75%, #4285f4 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .maps-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .maps-pin {
+            width: 40px;
+            height: 40px;
+            background: #ea4335;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            cursor: move;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: rotate(-45deg) translateY(0);
+            }
+            40% {
+                transform: rotate(-45deg) translateY(-10px);
+            }
+            60% {
+                transform: rotate(-45deg) translateY(-5px);
+            }
+        }
+        
+        .maps-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 16px;
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+        
+        .maps-distance {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .maps-coords {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+        
+        /* Camera Modal */
+        .camera-container {
+            height: 400px;
+            background: var(--primary);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .camera-viewfinder {
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .camera-instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .camera-controls {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .capture-btn {
+            width: 60px;
+            height: 60px;
+            border: 3px solid white;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .capture-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        /* Analysis Results */
+        .analysis-results {
+            padding: 24px;
+            display: none;
+        }
+        
+        .analysis-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        
+        .analysis-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .analysis-item:last-child {
+            border-bottom: none;
+        }
+        
+        .analysis-confidence {
+            background: var(--success);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
         /* Input Modal */
         .input-modal {
             position: fixed;
@@ -597,6 +800,39 @@
             color: var(--text-primary);
         }
         
+        .modal-buttons {
+            padding: 20px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            background: var(--light-grey);
+        }
+        
+        .modal-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .modal-btn.secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .modal-btn:hover {
+            opacity: 0.9;
+        }
+        
         /* Responsive */
         @media (max-width: 375px) {
             .distance-value {
@@ -612,11 +848,11 @@
             <div class="logo">CADDAIE</div>
             <div class="status-indicators">
                 <div class="status-item">
-                    <div class="status-dot" id="gpsStatus"></div>
+                    <div class="status-dot active" id="gpsStatus"></div>
                     <span>GPS</span>
                 </div>
                 <div class="status-item">
-                    <div class="status-dot" id="wxStatus"></div>
+                    <div class="status-dot active" id="wxStatus"></div>
                     <span>WX</span>
                 </div>
             </div>
@@ -642,14 +878,14 @@
             
             <!-- Quick Actions -->
             <div class="quick-actions">
-                <button class="action-btn" onclick="setPinLocation()">
+                <button class="action-btn" onclick="openMaps()">
                     <svg class="action-icon" viewBox="0 0 24 24" fill="none">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                         <circle cx="12" cy="10" r="3"/>
                     </svg>
                     Set Pin
                 </button>
-                <button class="action-btn" onclick="scanLie()">
+                <button class="action-btn" onclick="openCamera()">
                     <svg class="action-icon" viewBox="0 0 24 24" fill="none">
                         <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                         <circle cx="12" cy="13" r="4"/>
@@ -682,11 +918,60 @@
                 </div>
             </div>
             
+            <!-- Shot Adjustments -->
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Shot Adjustments</div>
+                </div>
+                <div class="adjustments-list">
+                    <div class="adjustment-item">
+                        <div class="adjustment-info">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                            <div class="adjustment-details">
+                                <h4>Elevation</h4>
+                                <p id="elevationDescription">17 feet uphill</p>
+                            </div>
+                        </div>
+                        <div class="adjustment-value positive" id="elevAdjustment">+6</div>
+                    </div>
+                    <div class="adjustment-item">
+                        <div class="adjustment-info">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17.7 7.7l-4.6 4.6"/>
+                                <path d="M14.1 7.7l4.6 4.6"/>
+                                <path d="M8.8 15.3l-4.6-4.6"/>
+                                <path d="M12.4 15.3l-4.6-4.6"/>
+                            </svg>
+                            <div class="adjustment-details">
+                                <h4>Wind</h4>
+                                <p id="windDescription">13 mph into wind</p>
+                            </div>
+                        </div>
+                        <div class="adjustment-value negative" id="windAdjustment">-4</div>
+                    </div>
+                    <div class="adjustment-item">
+                        <div class="adjustment-info">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                                <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
+                            </svg>
+                            <div class="adjustment-details">
+                                <h4>Temperature</h4>
+                                <p id="tempDescription">67°F - Cold air</p>
+                            </div>
+                        </div>
+                        <div class="adjustment-value positive" id="tempAdjustment">+2</div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Ball Lie -->
             <div class="section">
                 <div class="section-header">
                     <div class="section-title">Ball Lie</div>
-                    <button class="section-btn" onclick="scanLie()">Scan</button>
+                    <button class="section-btn" onclick="openCamera()">Scan</button>
                 </div>
                 <div class="lie-display">
                     <div class="lie-type" id="lieType">Fairway</div>
@@ -699,6 +984,15 @@
                 <div class="club-title">Recommended Club</div>
                 <div class="club-name" id="recommendedClub">7 Iron</div>
                 <div class="club-confidence" id="clubConfidence">Based on your 145 yard average</div>
+                
+                <!-- AI Commentary -->
+                <div class="ai-commentary">
+                    <div class="commentary-title">Caddie Advice</div>
+                    <div class="commentary-text" id="caddieAdvice">
+                        Playing 17 feet uphill with 13 mph into the wind. Cold air will reduce carry. 
+                        Club up to 6-iron and focus on a lower ball flight to cut through the wind.
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -718,88 +1012,12 @@
         <div class="page" id="statsPage">
             <div class="section">
                 <div class="section-header">
-                    <div class="section-title">Shot Adjustments</div>
+                    <div class="section-title">Round Statistics</div>
                 </div>
-                <div class="adjustments-list">
-                    <div class="adjustment-item">
-                        <div class="adjustment-info">
-                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6,9 12,15 18,9"/>
-                            </svg>
-                            <div class="adjustment-details">
-                                <h4>Elevation</h4>
-                                <p>18 feet uphill</p>
-                            </div>
-                        </div>
-                        <div class="adjustment-value positive" id="elevAdjustment">+6</div>
-                    </div>
-                    <div class="adjustment-item">
-                        <div class="adjustment-info">
-                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M17.7 7.7l-4.6 4.6"/>
-                                <path d="M14.1 7.7l4.6 4.6"/>
-                                <path d="M8.8 15.3l-4.6-4.6"/>
-                                <path d="M12.4 15.3l-4.6-4.6"/>
-                            </svg>
-                            <div class="adjustment-details">
-                                <h4>Wind</h4>
-                                <p>12 mph tailwind</p>
-                            </div>
-                        </div>
-                        <div class="adjustment-value negative" id="windAdjustment">-4</div>
-                    </div>
-                    <div class="adjustment-item">
-                        <div class="adjustment-info">
-                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
-                                <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
-                            </svg>
-                            <div class="adjustment-details">
-                                <h4>Temperature</h4>
-                                <p>58°F - Cold air</p>
-                            </div>
-                        </div>
-                        <div class="adjustment-value positive" id="tempAdjustment">+2</div>
-                    </div>
-                    <div class="adjustment-item">
-                        <div class="adjustment-info">
-                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M8 19a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h11l-3 3h-8a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1z"/>
-                            </svg>
-                            <div class="adjustment-details">
-                                <h4>Conditions</h4>
-                                <p>65% humidity</p>
-                            </div>
-                        </div>
-                        <div class="adjustment-value positive" id="conditionsAdjustment">+1</div>
-                    </div>
-                </div>
+                <p style="color: var(--text-secondary); text-align: center; padding: 40px 0;">
+                    Shot tracking and statistics coming soon
+                </p>
             </div>
-            
-            <div class="action-grid">
-                <button class="grid-btn" onclick="updateWeather()">
-                    <svg class="grid-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-                    </svg>
-                    <div class="grid-btn-title">Weather</div>
-                    <div class="grid-btn-subtitle">Update</div>
-                </button>
-                <button class="grid-btn" onclick="measureSlope()">
-                    <svg class="grid-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
-                    </svg>
-                    <div class="grid-btn-title">Slope</div>
-                    <div class="grid-btn-subtitle">Measure</div>
-                </button>
-            </div>
-            
-            <button class="section-btn" onclick="analyzeLie()" style="width: 100%; margin-top: 20px; padding: 16px;">
-                <svg style="width: 20px; height: 20px; margin-right: 8px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                    <circle cx="12" cy="13" r="4"/>
-                </svg>
-                Analyze Ball Lie
-            </button>
         </div>
         
         <!-- More Page -->
@@ -808,22 +1026,78 @@
                 <div class="section-header">
                     <div class="section-title">Settings</div>
                 </div>
-                <div class="action-grid">
-                    <button class="grid-btn">
-                        <svg class="grid-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="3"/>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                <p style="color: var(--text-secondary); text-align: center; padding: 40px 0;">
+                    Preferences and settings coming soon
+                </p>
+            </div>
+        </div>
+        
+        <!-- Google Maps Modal -->
+        <div class="modal" id="mapsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Set Pin Location</div>
+                    <button class="modal-close" onclick="closeMaps()">&times;</button>
+                </div>
+                <div class="maps-container">
+                    <div class="maps-overlay">
+                        <div class="maps-pin" id="mapPin"></div>
+                    </div>
+                    <div class="maps-info">
+                        <div class="maps-distance" id="mapDistance">156 yards to pin</div>
+                        <div class="maps-coords" id="mapCoords">40.7128° N, 74.0060° W</div>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button class="modal-btn secondary" onclick="closeMaps()">Cancel</button>
+                    <button class="modal-btn primary" onclick="confirmPin()">Set Pin</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Camera Modal -->
+        <div class="modal" id="cameraModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Scan Ball Lie</div>
+                    <button class="modal-close" onclick="closeCamera()">&times;</button>
+                </div>
+                <div class="camera-container">
+                    <div class="camera-viewfinder">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
                         </svg>
-                        <div class="grid-btn-title">Preferences</div>
-                        <div class="grid-btn-subtitle">Units & Display</div>
-                    </button>
-                    <button class="grid-btn">
-                        <svg class="grid-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                        </svg>
-                        <div class="grid-btn-title">Support</div>
-                        <div class="grid-btn-subtitle">Help & Feedback</div>
-                    </button>
+                    </div>
+                    <div class="camera-instructions">
+                        Position ball in center of frame and tap capture
+                    </div>
+                    <div class="camera-controls">
+                        <button class="capture-btn" onclick="capturePhoto()"></button>
+                    </div>
+                </div>
+                <div class="analysis-results" id="analysisResults">
+                    <div class="analysis-title">Analysis Complete</div>
+                    <div class="analysis-item">
+                        <span>Lie Type</span>
+                        <span id="analyzedLie">Primary Rough</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span>Distance Penalty</span>
+                        <span id="analyzedPenalty">-8 yards</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span>Confidence</span>
+                        <span class="analysis-confidence" id="analyzedConfidence">94%</span>
+                    </div>
+                </div>
+                <div class="modal-buttons" id="cameraButtons">
+                    <button class="modal-btn secondary" onclick="closeCamera()">Cancel</button>
+                    <button class="modal-btn primary" onclick="retakePhoto()" id="retakeBtn">Retake</button>
+                </div>
+                <div class="modal-buttons" id="analysisButtons" style="display: none;">
+                    <button class="modal-btn secondary" onclick="retakePhoto()">Retake</button>
+                    <button class="modal-btn primary" onclick="applyLieAnalysis()">Apply</button>
                 </div>
             </div>
         </div>
@@ -888,13 +1162,14 @@
                 temperature: 67,
                 windSpeed: 13,
                 elevation: 17,
-                tempAdjustment: -2,
-                windAdjustment: -5,
+                tempAdjustment: 2,
+                windAdjustment: -4,
                 elevAdjustment: 6
             },
             lie: {
                 type: 'fairway',
-                penalty: 0
+                penalty: 0,
+                name: 'Fairway'
             },
             clubs: {
                 'Driver': 280,
@@ -917,54 +1192,110 @@
         // Initialize App
         window.addEventListener('DOMContentLoaded', function() {
             console.log('CaddAIe Starting...');
-            initializeGPS();
-            updateWeather();
             populateClubList();
             updateClubRecommendation();
+            generateCaddieAdvice();
             updateUI();
         });
         
-        // GPS Functions
-        function initializeGPS() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        document.getElementById('gpsStatus').classList.add('active');
-                        showNotification('GPS locked');
-                    },
-                    (error) => {
-                        console.error('GPS Error:', error);
-                        showNotification('GPS failed - Enable location');
-                    }
-                );
-            }
-        }
-        
-        function updateWeather() {
-            // Simulate weather update
-            document.getElementById('wxStatus').classList.add('active');
-            showNotification('Weather updated');
-        }
-        
         // Navigation
         function showPage(pageName) {
-            // Hide all pages
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
             
-            // Remove active from all nav items
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
             
-            // Show selected page
             document.getElementById(pageName + 'Page').classList.add('active');
-            
-            // Set active nav item
             event.target.closest('.nav-item').classList.add('active');
             
             appState.currentPage = pageName;
+        }
+        
+        // Google Maps Functions
+        function openMaps() {
+            document.getElementById('mapsModal').style.display = 'flex';
+            showNotification('Opening Google Maps...');
+        }
+        
+        function closeMaps() {
+            document.getElementById('mapsModal').style.display = 'none';
+        }
+        
+        function confirmPin() {
+            // Simulate pin placement with random distance variation
+            const newDistance = 135 + Math.random() * 30; // 135-165 yards
+            appState.distance.raw = Math.round(newDistance);
+            calculateAdjustments();
+            updateUI();
+            updateClubRecommendation();
+            generateCaddieAdvice();
+            closeMaps();
+            showNotification(`Pin set - ${Math.round(newDistance)} yards`);
+        }
+        
+        // Camera Functions
+        function openCamera() {
+            document.getElementById('cameraModal').style.display = 'flex';
+            document.getElementById('analysisResults').style.display = 'none';
+            document.getElementById('cameraButtons').style.display = 'grid';
+            document.getElementById('analysisButtons').style.display = 'none';
+            showNotification('Camera ready - Frame your ball');
+        }
+        
+        function closeCamera() {
+            document.getElementById('cameraModal').style.display = 'none';
+        }
+        
+        function capturePhoto() {
+            showNotification('Analyzing lie...');
+            
+            // Simulate AI analysis
+            setTimeout(() => {
+                const lies = [
+                    { type: 'fairway', penalty: 0, name: 'Fairway', description: 'Clean lie' },
+                    { type: 'first_cut', penalty: -3, name: 'First Cut', description: 'Light rough' },
+                    { type: 'rough', penalty: -8, name: 'Primary Rough', description: 'Moderate resistance' },
+                    { type: 'heavy_rough', penalty: -15, name: 'Heavy Rough', description: 'Significant resistance' },
+                    { type: 'bunker', penalty: -12, name: 'Greenside Bunker', description: 'Sand lie' }
+                ];
+                
+                const detected = lies[Math.floor(Math.random() * lies.length)];
+                const confidence = 85 + Math.random() * 15; // 85-100%
+                
+                document.getElementById('analyzedLie').textContent = detected.name;
+                document.getElementById('analyzedPenalty').textContent = 
+                    detected.penalty ? `${detected.penalty} yards` : 'No penalty';
+                document.getElementById('analyzedConfidence').textContent = `${Math.round(confidence)}%`;
+                
+                appState.detectedLie = detected;
+                
+                document.getElementById('analysisResults').style.display = 'block';
+                document.getElementById('cameraButtons').style.display = 'none';
+                document.getElementById('analysisButtons').style.display = 'grid';
+                
+                showNotification('Lie analysis complete');
+            }, 2500);
+        }
+        
+        function retakePhoto() {
+            document.getElementById('analysisResults').style.display = 'none';
+            document.getElementById('cameraButtons').style.display = 'grid';
+            document.getElementById('analysisButtons').style.display = 'none';
+        }
+        
+        function applyLieAnalysis() {
+            if (appState.detectedLie) {
+                appState.lie = appState.detectedLie;
+                calculateAdjustments();
+                updateUI();
+                updateClubRecommendation();
+                generateCaddieAdvice();
+                closeCamera();
+                showNotification(`Lie updated: ${appState.detectedLie.name}`);
+            }
         }
         
         // Edit Functions
@@ -1005,7 +1336,6 @@
             document.getElementById('inputModal').style.display = 'flex';
             currentEditField = { field, extra };
             
-            // Focus and select text
             setTimeout(() => {
                 const input = document.getElementById('inputField');
                 input.focus();
@@ -1049,6 +1379,8 @@
             }
             
             updateUI();
+            updateClubRecommendation();
+            generateCaddieAdvice();
             closeInput();
             showNotification('Value updated');
         }
@@ -1060,20 +1392,20 @@
             // Temperature adjustment (baseline 77°F)
             appState.conditions.tempAdjustment = Math.round((77 - temperature) * 0.15);
             
-            // Wind adjustment (simplified)
-            appState.conditions.windAdjustment = Math.round(windSpeed * 0.4 * (Math.random() > 0.5 ? -1 : 1));
+            // Wind adjustment (simplified - would need direction in real app)
+            appState.conditions.windAdjustment = Math.round(windSpeed * 0.3 * (Math.random() > 0.6 ? -1 : 1));
             
             // Elevation adjustment (1 yard per 3 feet)
             appState.conditions.elevAdjustment = Math.round(elevation / 3);
             
-            // Update total distance
+            // Update total distance if not manually set
             if (!appState.distance.manual) {
                 const totalAdjustment = appState.conditions.tempAdjustment + 
                                        appState.conditions.windAdjustment + 
                                        appState.conditions.elevAdjustment + 
                                        appState.lie.penalty;
                 
-                appState.distance.adjusted = appState.distance.raw + totalAdjustment;
+                appState.distance.adjusted = Math.max(50, appState.distance.raw + totalAdjustment);
             }
         }
         
@@ -1111,46 +1443,60 @@
                 `Based on your ${appState.clubs[bestClub]} yard average`;
         }
         
-        // Action Functions
-        function setPinLocation() {
-            showNotification('Opening pin location...');
-            // Would integrate with Google Maps here
-        }
-        
-        function scanLie() {
-            showNotification('Analyzing lie...');
+        // AI Caddie Advice Generator
+        function generateCaddieAdvice() {
+            const { elevation, windSpeed, temperature, tempAdjustment, windAdjustment, elevAdjustment } = appState.conditions;
+            const lie = appState.lie;
             
-            // Simulate lie detection
-            setTimeout(() => {
-                const lies = [
-                    { type: 'fairway', penalty: 0, name: 'Fairway' },
-                    { type: 'rough', penalty: -8, name: 'Primary Rough' },
-                    { type: 'bunker', penalty: -12, name: 'Greenside Bunker' }
-                ];
-                
-                const detected = lies[Math.floor(Math.random() * lies.length)];
-                appState.lie = detected;
-                
-                document.getElementById('lieType').textContent = detected.name;
-                document.getElementById('liePenalty').textContent = 
-                    detected.penalty ? `${detected.penalty}y penalty` : 'No penalty';
-                
-                if (detected.penalty !== 0) {
-                    document.getElementById('liePenalty').classList.add('penalty');
+            let advice = [];
+            
+            // Elevation advice
+            if (Math.abs(elevation) > 10) {
+                if (elevation > 0) {
+                    advice.push(`Playing ${Math.abs(elevation)} feet uphill`);
+                } else {
+                    advice.push(`Playing ${Math.abs(elevation)} feet downhill`);
                 }
-                
-                calculateAdjustments();
-                updateUI();
-                showNotification(`Lie detected: ${detected.name}`);
-            }, 2000);
-        }
-        
-        function analyzeLie() {
-            scanLie();
-        }
-        
-        function measureSlope() {
-            showNotification('Measuring slope...');
+            }
+            
+            // Wind advice
+            if (windSpeed > 8) {
+                const windDirection = windAdjustment < 0 ? 'into' : 'with';
+                advice.push(`${windSpeed} mph ${windDirection} the wind`);
+            }
+            
+            // Temperature advice
+            if (temperature < 65) {
+                advice.push(`Cold air will reduce carry`);
+            } else if (temperature > 85) {
+                advice.push(`Hot air will increase carry`);
+            }
+            
+            // Club recommendation logic
+            let clubAdvice = '';
+            const totalAdjustment = elevAdjustment + windAdjustment + tempAdjustment;
+            
+            if (totalAdjustment > 5) {
+                clubAdvice = 'Club down and swing smooth';
+            } else if (totalAdjustment < -5) {
+                clubAdvice = 'Club up and focus on solid contact';
+            } else if (windSpeed > 12) {
+                clubAdvice = 'Focus on a lower ball flight to cut through the wind';
+            } else if (lie.penalty < -5) {
+                clubAdvice = 'Expect less distance from this lie - swing aggressively';
+            } else {
+                clubAdvice = 'Trust your yardage and commit to the shot';
+            }
+            
+            // Combine advice
+            let fullAdvice = '';
+            if (advice.length > 0) {
+                fullAdvice = advice.join(', ') + '. ' + clubAdvice + '.';
+            } else {
+                fullAdvice = 'Perfect conditions. ' + clubAdvice + '.';
+            }
+            
+            document.getElementById('caddieAdvice').textContent = fullAdvice;
         }
         
         // UI Updates
@@ -1165,7 +1511,7 @@
             document.getElementById('elevValue').textContent = 
                 `${appState.conditions.elevation > 0 ? '+' : ''}${Math.round(appState.conditions.elevation)} ft`;
             
-            // Adjustments
+            // Condition impacts
             const tempAdj = appState.conditions.tempAdjustment;
             const windAdj = appState.conditions.windAdjustment;
             const elevAdj = appState.conditions.elevAdjustment;
@@ -1174,15 +1520,26 @@
             document.getElementById('windImpact').textContent = windAdj ? `${windAdj > 0 ? '+' : ''}${windAdj}y` : '0y';
             document.getElementById('elevImpact').textContent = elevAdj ? `${elevAdj > 0 ? '+' : ''}${elevAdj}y` : '0y';
             
-            // Stats page adjustments
-            document.getElementById('elevAdjustment').textContent = elevAdj > 0 ? `+${elevAdj}` : elevAdj;
-            document.getElementById('windAdjustment').textContent = windAdj > 0 ? `+${windAdj}` : windAdj;
-            document.getElementById('tempAdjustment').textContent = tempAdj > 0 ? `+${tempAdj}` : tempAdj;
-            document.getElementById('conditionsAdjustment').textContent = '+1';
+            // Shot adjustments
+            document.getElementById('elevAdjustment').textContent = elevAdj > 0 ? `+${elevAdj}` : elevAdj || '0';
+            document.getElementById('windAdjustment').textContent = windAdj > 0 ? `+${windAdj}` : windAdj || '0';
+            document.getElementById('tempAdjustment').textContent = tempAdj > 0 ? `+${tempAdj}` : tempAdj || '0';
             
-            // Update class names for colors
+            // Descriptions
+            document.getElementById('elevationDescription').textContent = 
+                `${Math.abs(appState.conditions.elevation)} feet ${appState.conditions.elevation > 0 ? 'uphill' : 'downhill'}`;
+            document.getElementById('windDescription').textContent = 
+                `${appState.conditions.windSpeed} mph ${windAdj < 0 ? 'into wind' : 'with wind'}`;
+            document.getElementById('tempDescription').textContent = 
+                `${appState.conditions.temperature}°F - ${appState.conditions.temperature < 65 ? 'Cold' : appState.conditions.temperature > 85 ? 'Hot' : 'Moderate'} air`;
+            
+            // Lie display
+            document.getElementById('lieType').textContent = appState.lie.name || 'Fairway';
+            document.getElementById('liePenalty').textContent = 
+                appState.lie.penalty ? `${appState.lie.penalty}y penalty` : 'No penalty';
+            
+            // Update colors
             updateAdjustmentColors();
-            updateClubRecommendation();
         }
         
         function updateAdjustmentColors() {
@@ -1208,7 +1565,6 @@
         
         // Notifications
         function showNotification(message) {
-            // Remove existing notifications
             document.querySelectorAll('.notification').forEach(n => n.remove());
             
             const notification = document.createElement('div');
@@ -1242,4 +1598,3 @@
 </html>
 Improve
 Explain
-Enhancing CaddAIe's GPS and UI - Claude
