@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CaddAIe - Professional Golf Caddie</title>
-    <meta name="theme-color" content="#1a1a1a">
+    <meta name="theme-color" content="#000000">
     <meta name="description" content="Professional golf distance calculator with real-time GPS, weather, and elevation">
     
     <style>
@@ -15,29 +15,32 @@
         }
         
         :root {
-            --primary: #1a1a1a;
-            --accent: #8B7355;
-            --gold: #D4AF37;
-            --cream: #FAF8F3;
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #F8F6F1;
-            --bg-tertiary: #EFEFEC;
-            --text-primary: #1a1a1a;
+            --primary: #000000;
+            --secondary: #1a1a1a;
+            --accent: #333333;
+            --light-grey: #f8f8f8;
+            --med-grey: #e8e8e8;
+            --dark-grey: #666666;
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --text-primary: #000000;
             --text-secondary: #666666;
             --text-tertiary: #999999;
-            --border: #E5E5E5;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --success: #4A7C59;
-            --danger: #B85450;
+            --border: #e0e0e0;
+            --success: #2d5016;
+            --danger: #d32f2f;
+            --warning: #f57c00;
+            --blue: #1976d2;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            padding-bottom: 80px;
         }
         
         .app-container {
@@ -46,62 +49,57 @@
             min-height: 100vh;
             background: var(--bg-primary);
             position: relative;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
         }
         
         /* Header */
         .header {
-            background: var(--bg-primary);
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
+            background: var(--primary);
+            padding: 20px 24px 16px 24px;
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .logo {
-            font-size: 24px;
-            font-weight: 300;
+            font-size: 16px;
+            font-weight: 400;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: var(--primary);
         }
         
-        /* GPS Alert Box */
-        .gps-alert {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 15px;
-            margin: 20px;
-            border-radius: 8px;
-            text-align: center;
+        .status-indicators {
+            display: flex;
+            gap: 16px;
+            align-items: center;
         }
         
-        .gps-alert button {
-            background: #856404;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 16px;
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
             font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
-        /* Distance Display */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--danger);
+        }
+        
+        .status-dot.active {
+            background: #4caf50;
+        }
+        
+        /* Distance Section */
         .distance-section {
-            background: var(--bg-secondary);
             padding: 40px 24px;
             text-align: center;
-            border-bottom: 1px solid var(--border);
+            background: var(--light-grey);
         }
         
         .distance-label {
@@ -113,12 +111,17 @@
             margin-bottom: 16px;
         }
         
+        .distance-display {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        
         .distance-value {
-            font-size: 84px;
+            font-size: 96px;
             font-weight: 200;
             line-height: 1;
             color: var(--primary);
-            margin-bottom: 8px;
             font-variant-numeric: tabular-nums;
         }
         
@@ -129,790 +132,1114 @@
             margin-left: 8px;
         }
         
+        .distance-edit {
+            position: absolute;
+            top: 8px;
+            right: -32px;
+            width: 24px;
+            height: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            color: var(--text-tertiary);
+        }
+        
+        .distance-edit:hover {
+            background: var(--med-grey);
+            color: var(--text-primary);
+        }
+        
         .distance-raw {
             font-size: 14px;
-            color: var(--text-tertiary);
-            margin-top: 12px;
-        }
-        
-        /* GPS Status Card */
-        .gps-card {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px;
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-        
-        .gps-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .gps-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-        
-        .gps-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .gps-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--danger);
-        }
-        
-        .gps-indicator.active {
-            background: var(--success);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(74, 124, 89, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(74, 124, 89, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(74, 124, 89, 0); }
-        }
-        
-        .gps-info {
-            display: grid;
-            gap: 10px;
-        }
-        
-        .gps-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-        }
-        
-        .gps-label {
             color: var(--text-secondary);
+            font-weight: 400;
         }
         
-        .gps-value {
-            font-weight: 500;
-        }
-        
-        /* Action Buttons */
-        .action-buttons {
+        /* Quick Actions */
+        .quick-actions {
             display: grid;
-            gap: 12px;
-            padding: 20px;
+            grid-template-columns: 1fr 1fr;
+            margin: 0;
         }
         
-        .btn {
+        .action-btn {
             background: var(--primary);
             color: white;
             border: none;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .action-btn:first-child {
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .action-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .action-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            stroke: currentColor;
+            stroke-width: 1.5;
+        }
+        
+        /* Section */
+        .section {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+        
+        .section-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        
+        .section-btn:hover {
+            background: var(--secondary);
+        }
+        
+        /* Conditions Grid */
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .condition-item {
+            text-align: center;
+        }
+        
+        .condition-value {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 4px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+        
+        .condition-value:hover {
+            background: var(--med-grey);
+        }
+        
+        .condition-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+        
+        .condition-impact {
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+        
+        .condition-impact.positive {
+            color: var(--success);
+        }
+        
+        .condition-impact.negative {
+            color: var(--danger);
+        }
+        
+        /* Shot Adjustments */
+        .adjustments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .adjustment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .adjustment-item:last-child {
+            border-bottom: none;
+        }
+        
+        .adjustment-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .adjustment-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .adjustment-details h4 {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        
+        .adjustment-details p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .adjustment-value {
+            font-size: 18px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .adjustment-value.positive {
+            color: var(--success);
+        }
+        
+        .adjustment-value.negative {
+            color: var(--danger);
+        }
+        
+        /* Lie Display */
+        .lie-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 16px;
+            background: var(--light-grey);
+            border-radius: 8px;
+        }
+        
+        .lie-type {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .lie-penalty {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .lie-penalty.penalty {
+            color: var(--danger);
+        }
+        
+        /* Action Grid */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .grid-btn {
+            background: var(--light-grey);
+            border: 1px solid var(--border);
+            padding: 20px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+        }
+        
+        .grid-btn:hover {
+            background: var(--med-grey);
+        }
+        
+        .grid-btn-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--text-secondary);
+        }
+        
+        .grid-btn-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .grid-btn-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* Club recommendation */
+        .club-recommendation {
+            background: var(--primary);
+            color: white;
+            padding: 20px 24px;
+            text-align: center;
+        }
+        
+        .club-title {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+        
+        .club-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .club-confidence {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            z-index: 100;
+        }
+        
+        .nav-item {
+            background: none;
+            border: none;
+            padding: 12px 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .nav-item:hover {
+            background: var(--light-grey);
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Page Content */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* Club Settings */
+        .club-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border);
+        }
+        
+        .club-item {
+            background: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .club-name-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .club-distance {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+        
+        .club-distance:hover {
+            background: var(--light-grey);
+        }
+        
+        /* Input Modal */
+        .input-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .input-content {
+            background: white;
+            padding: 24px;
+            margin: 20px;
+            border-radius: 12px;
+            min-width: 280px;
+        }
+        
+        .input-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .input-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .input-btn {
+            padding: 12px;
+            border: none;
             border-radius: 8px;
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
         
-        .btn:hover:not(:disabled) {
-            background: var(--accent);
-        }
-        
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .btn.secondary {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-        
-        .btn.success {
-            background: var(--success);
-        }
-        
-        .btn.danger {
-            background: var(--danger);
-        }
-        
-        /* Weather Card */
-        .weather-card {
-            background: var(--cream);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px;
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-        
-        .weather-header {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--accent);
-        }
-        
-        .weather-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .weather-item {
-            text-align: center;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-        }
-        
-        .weather-value {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
-        .weather-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-top: 5px;
-        }
-        
-        /* Factors */
-        .factors-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px;
-        }
-        
-        .factor-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .factor-item:last-child {
-            border-bottom: none;
-        }
-        
-        .factor-name {
-            font-size: 16px;
-            color: var(--text-primary);
-        }
-        
-        .factor-value {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--success);
-        }
-        
-        .factor-value.negative {
-            color: var(--danger);
-        }
-        
-        /* Loading */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0,0,0,.1);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+        .input-btn.primary {
             background: var(--primary);
             color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            animation: slideUp 0.3s ease;
         }
         
-        @keyframes slideUp {
-            from { transform: translate(-50%, 100%); }
-            to { transform: translate(-50%, 0); }
+        .input-btn.secondary {
+            background: var(--light-grey);
+            color: var(--text-primary);
         }
         
-        /* Debug Panel */
-        .debug-panel {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 20px;
-            font-family: monospace;
-            font-size: 12px;
-        }
-        
-        .debug-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .debug-item {
-            margin: 5px 0;
+        /* Responsive */
+        @media (max-width: 375px) {
+            .distance-value {
+                font-size: 80px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
+        <!-- Header -->
         <div class="header">
-            <div class="header-content">
-                <div class="logo">CaddAIe</div>
-            </div>
-        </div>
-        
-        <!-- GPS Alert -->
-        <div class="gps-alert" id="gpsAlert" style="display: none;">
-            <strong>GPS Required</strong><br>
-            <span id="gpsAlertText">This app needs your location to calculate distances</span><br>
-            <button onclick="enableGPS()">Enable GPS</button>
-        </div>
-        
-        <!-- Distance Display -->
-        <div class="distance-section">
-            <div class="distance-label">Adjusted Distance</div>
-            <div>
-                <span class="distance-value" id="adjustedDistance">---</span>
-                <span class="distance-unit">yds</span>
-            </div>
-            <div class="distance-raw">GPS Distance: <span id="rawDistance">---</span> yards</div>
-        </div>
-        
-        <!-- GPS Status Card -->
-        <div class="gps-card">
-            <div class="gps-header">
-                <h3 class="gps-title">GPS Status</h3>
-                <div class="gps-status">
-                    <div class="gps-indicator" id="gpsIndicator"></div>
-                    <span id="gpsStatusText">Initializing...</span>
+            <div class="logo">CADDAIE</div>
+            <div class="status-indicators">
+                <div class="status-item">
+                    <div class="status-dot" id="gpsStatus"></div>
+                    <span>GPS</span>
                 </div>
-            </div>
-            <div class="gps-info">
-                <div class="gps-row">
-                    <span class="gps-label">Your Location:</span>
-                    <span class="gps-value" id="yourLocation">---</span>
-                </div>
-                <div class="gps-row">
-                    <span class="gps-label">Pin Location:</span>
-                    <span class="gps-value" id="pinLocation">---</span>
-                </div>
-                <div class="gps-row">
-                    <span class="gps-label">Accuracy:</span>
-                    <span class="gps-value" id="gpsAccuracy">---</span>
+                <div class="status-item">
+                    <div class="status-dot" id="wxStatus"></div>
+                    <span>WX</span>
                 </div>
             </div>
         </div>
         
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="btn" onclick="forceGPSRequest()">
-                📍 Get My GPS Location
+        <!-- Play Page -->
+        <div class="page active" id="playPage">
+            <!-- Distance Display -->
+            <div class="distance-section">
+                <div class="distance-label">Distance to Pin</div>
+                <div class="distance-display">
+                    <span class="distance-value" id="distanceValue" onclick="editDistance()">146</span>
+                    <span class="distance-unit">yds</span>
+                    <button class="distance-edit" onclick="editDistance()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="distance-raw">GPS Distance: <span id="rawDistance">142</span> yards</div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn" onclick="setPinLocation()">
+                    <svg class="action-icon" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    Set Pin
+                </button>
+                <button class="action-btn" onclick="scanLie()">
+                    <svg class="action-icon" viewBox="0 0 24 24" fill="none">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                        <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                    Scan Lie
+                </button>
+            </div>
+            
+            <!-- Conditions -->
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Conditions</div>
+                </div>
+                <div class="conditions-grid">
+                    <div class="condition-item">
+                        <div class="condition-value" onclick="editValue('temp')" id="tempValue">67°</div>
+                        <div class="condition-label">Temp</div>
+                        <div class="condition-impact negative" id="tempImpact">-2y</div>
+                    </div>
+                    <div class="condition-item">
+                        <div class="condition-value" onclick="editValue('wind')" id="windValue">13 mph</div>
+                        <div class="condition-label">Wind</div>
+                        <div class="condition-impact negative" id="windImpact">-5y</div>
+                    </div>
+                    <div class="condition-item">
+                        <div class="condition-value" onclick="editValue('elevation')" id="elevValue">+17 ft</div>
+                        <div class="condition-label">Elev</div>
+                        <div class="condition-impact positive" id="elevImpact">+6y</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ball Lie -->
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Ball Lie</div>
+                    <button class="section-btn" onclick="scanLie()">Scan</button>
+                </div>
+                <div class="lie-display">
+                    <div class="lie-type" id="lieType">Fairway</div>
+                    <div class="lie-penalty" id="liePenalty">No penalty</div>
+                </div>
+            </div>
+            
+            <!-- Club Recommendation -->
+            <div class="club-recommendation" id="clubRecommendation">
+                <div class="club-title">Recommended Club</div>
+                <div class="club-name" id="recommendedClub">7 Iron</div>
+                <div class="club-confidence" id="clubConfidence">Based on your 145 yard average</div>
+            </div>
+        </div>
+        
+        <!-- Bag Page -->
+        <div class="page" id="bagPage">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Club Distances</div>
+                </div>
+                <div class="club-list" id="clubList">
+                    <!-- Club items will be populated here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Page -->
+        <div class="page" id="statsPage">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Shot Adjustments</div>
+                </div>
+                <div class="adjustments-list">
+                    <div class="adjustment-item">
+                        <div class="adjustment-info">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                            <div class="adjustment-details">
+                                <h4>Elevation</h4>
+                                <p>18 feet uphill</p>
+                            </div>
+                        </div>
+                        <div class="adjustment-value positive" id="elevAdjustment">+6</div>
+                    </div>
+                    <div class="adjustment-item">
+                        <div class="adjustment-info">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17.7 7.7l-4.6 4.6"/>
+                                <path d="M14.1 7.7l4.6 4.6"/>
+                                <path d="M8.8 15.3l-4.6-4.6"/>
+                                <path d="M12.4 15.3l-4.6-4.6"/>
+                            </svg>
+                            <div class="adjustment-details">
+                                <h4>Wind</h4>
+                                <p>12 mph tailwind</p>
+                            </div>
+                        </div>
+                        <div class="adjustment-value negative" id="windAdjustment">-4</div>
+                    </div>
+                    <div class="adjustment-item">
+                        <div class="adjustment-info">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                                <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
+                            </svg>
+                            <div class="adjustment-details">
+                                <h4>Temperature</h4>
+                                <p>58°F - Cold air</p>
+                            </div>
+                        </div>
+                        <div class="adjustment-value positive" id="tempAdjustment">+2</div>
+                    </div>
+                    <div class="adjustment-item">
+                        <div class="adjustment-info">
+                            <svg class="adjustment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M8 19a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h11l-3 3h-8a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1z"/>
+                            </svg>
+                            <div class="adjustment-details">
+                                <h4>Conditions</h4>
+                                <p>65% humidity</p>
+                            </div>
+                        </div>
+                        <div class="adjustment-value positive" id="conditionsAdjustment">+1</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-grid">
+                <button class="grid-btn" onclick="updateWeather()">
+                    <svg class="grid-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                    </svg>
+                    <div class="grid-btn-title">Weather</div>
+                    <div class="grid-btn-subtitle">Update</div>
+                </button>
+                <button class="grid-btn" onclick="measureSlope()">
+                    <svg class="grid-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+                    </svg>
+                    <div class="grid-btn-title">Slope</div>
+                    <div class="grid-btn-subtitle">Measure</div>
+                </button>
+            </div>
+            
+            <button class="section-btn" onclick="analyzeLie()" style="width: 100%; margin-top: 20px; padding: 16px;">
+                <svg style="width: 20px; height: 20px; margin-right: 8px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+                Analyze Ball Lie
             </button>
-            <button class="btn secondary" onclick="setPinLocation()">
-                ⛳ Set Pin Location
-            </button>
-            <button class="btn secondary" onclick="updateWeatherData()">
-                🌤️ Update Weather
-            </button>
-            <button class="btn danger" onclick="showDebugInfo()">
-                🔧 Debug GPS Issues
-            </button>
         </div>
         
-        <!-- Weather Card -->
-        <div class="weather-card">
-            <h3 class="weather-header">Current Conditions</h3>
-            <div class="weather-grid">
-                <div class="weather-item">
-                    <div class="weather-value" id="temperature">---</div>
-                    <div class="weather-label">Temperature</div>
+        <!-- More Page -->
+        <div class="page" id="morePage">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Settings</div>
                 </div>
-                <div class="weather-item">
-                    <div class="weather-value" id="windSpeed">---</div>
-                    <div class="weather-label">Wind Speed</div>
-                </div>
-                <div class="weather-item">
-                    <div class="weather-value" id="humidity">---</div>
-                    <div class="weather-label">Humidity</div>
-                </div>
-                <div class="weather-item">
-                    <div class="weather-value" id="elevation">---</div>
-                    <div class="weather-label">Elevation</div>
+                <div class="action-grid">
+                    <button class="grid-btn">
+                        <svg class="grid-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        <div class="grid-btn-title">Preferences</div>
+                        <div class="grid-btn-subtitle">Units & Display</div>
+                    </button>
+                    <button class="grid-btn">
+                        <svg class="grid-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <div class="grid-btn-title">Support</div>
+                        <div class="grid-btn-subtitle">Help & Feedback</div>
+                    </button>
                 </div>
             </div>
         </div>
         
-        <!-- Factors Card -->
-        <div class="factors-card">
-            <h3 style="margin-bottom: 15px;">Shot Adjustments</h3>
-            <div id="factorsList">
-                <div class="factor-item">
-                    <span class="factor-name">Calculating...</span>
-                    <span class="factor-value">---</span>
-                </div>
-            </div>
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="showPage('play')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5,3 19,12 5,21"/>
+                </svg>
+                <div class="nav-label">Play</div>
+            </button>
+            <button class="nav-item" onclick="showPage('bag')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+                <div class="nav-label">Bag</div>
+            </button>
+            <button class="nav-item" onclick="showPage('stats')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                <div class="nav-label">Stats</div>
+            </button>
+            <button class="nav-item" onclick="showPage('more')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="1"/>
+                    <circle cx="19" cy="12" r="1"/>
+                    <circle cx="5" cy="12" r="1"/>
+                </svg>
+                <div class="nav-label">More</div>
+            </button>
         </div>
         
-        <!-- Debug Panel -->
-        <div class="debug-panel" id="debugPanel" style="display: none;">
-            <div class="debug-title">GPS Debug Information</div>
-            <div id="debugInfo"></div>
+        <!-- Input Modal -->
+        <div class="input-modal" id="inputModal">
+            <div class="input-content">
+                <div class="input-title" id="inputTitle">Edit Value</div>
+                <input type="number" class="input-field" id="inputField" placeholder="Enter value">
+                <div class="input-buttons">
+                    <button class="input-btn secondary" onclick="closeInput()">Cancel</button>
+                    <button class="input-btn primary" onclick="saveInput()">Save</button>
+                </div>
+            </div>
         </div>
     </div>
     
     <script>
-        // Global Variables
-        let userLocation = null;
-        let pinLocation = null;
-        let watchId = null;
-        let gpsAttempts = 0;
-        
         // App State
         const appState = {
-            distance: 0,
-            adjustedDistance: 0,
-            factors: {
-                elevation: 0,
-                wind: 0,
-                temperature: 0,
-                humidity: 0
-            }
+            currentPage: 'play',
+            distance: {
+                raw: 142,
+                adjusted: 146,
+                manual: null
+            },
+            conditions: {
+                temperature: 67,
+                windSpeed: 13,
+                elevation: 17,
+                tempAdjustment: -2,
+                windAdjustment: -5,
+                elevAdjustment: 6
+            },
+            lie: {
+                type: 'fairway',
+                penalty: 0
+            },
+            clubs: {
+                'Driver': 280,
+                '3-Wood': 240,
+                '5-Wood': 220,
+                '3-Iron': 200,
+                '4-Iron': 185,
+                '5-Iron': 170,
+                '6-Iron': 155,
+                '7-Iron': 145,
+                '8-Iron': 135,
+                '9-Iron': 125,
+                'PW': 110,
+                'SW': 95,
+                'LW': 80
+            },
+            editingField: null
         };
         
         // Initialize App
         window.addEventListener('DOMContentLoaded', function() {
-            console.log('CaddAIe GPS App Starting...');
-            checkGPSSupport();
-            
-            // Try to get GPS immediately
-            setTimeout(() => {
-                forceGPSRequest();
-            }, 1000);
+            console.log('CaddAIe Starting...');
+            initializeGPS();
+            updateWeather();
+            populateClubList();
+            updateClubRecommendation();
+            updateUI();
         });
         
-        // Check GPS Support
-        function checkGPSSupport() {
-            const debugInfo = {
-                protocol: location.protocol,
-                hostname: location.hostname,
-                userAgent: navigator.userAgent,
-                geolocationAvailable: 'geolocation' in navigator
-            };
-            
-            console.log('GPS Support Check:', debugInfo);
-            
-            if (!('geolocation' in navigator)) {
-                showGPSAlert('GPS not supported on this device');
-                updateDebugInfo('GPS not supported by browser');
-                return false;
-            }
-            
-            if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-                showGPSAlert('HTTPS required for GPS. Please use https://');
-                updateDebugInfo('HTTPS required but not detected');
-                return false;
-            }
-            
-            return true;
-        }
-        
-        // Show GPS Alert
-        function showGPSAlert(message) {
-            const alert = document.getElementById('gpsAlert');
-            const alertText = document.getElementById('gpsAlertText');
-            alert.style.display = 'block';
-            alertText.textContent = message;
-        }
-        
-        // Force GPS Request
-        async function forceGPSRequest() {
-            console.log('Force GPS Request - Attempt', ++gpsAttempts);
-            
-            const statusText = document.getElementById('gpsStatusText');
-            const indicator = document.getElementById('gpsIndicator');
-            
-            statusText.textContent = 'Requesting location...';
-            
-            if (!checkGPSSupport()) {
-                return;
-            }
-            
-            try {
-                // Show loading
-                showNotification('📍 Requesting GPS permission...');
-                
-                // Request with high accuracy
-                const position = await new Promise((resolve, reject) => {
-                    const options = {
-                        enableHighAccuracy: true,
-                        timeout: 15000,
-                        maximumAge: 0
-                    };
-                    
-                    navigator.geolocation.getCurrentPosition(
-                        (pos) => {
-                            console.log('GPS Success:', pos);
-                            resolve(pos);
-                        },
-                        (err) => {
-                            console.error('GPS Error:', err);
-                            reject(err);
-                        },
-                        options
-                    );
-                });
-                
-                // Success!
-                handleGPSSuccess(position);
-                
-            } catch (error) {
-                handleGPSError(error);
+        // GPS Functions
+        function initializeGPS() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        document.getElementById('gpsStatus').classList.add('active');
+                        showNotification('GPS locked');
+                    },
+                    (error) => {
+                        console.error('GPS Error:', error);
+                        showNotification('GPS failed - Enable location');
+                    }
+                );
             }
         }
         
-        // Handle GPS Success
-        function handleGPSSuccess(position) {
-            userLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-                accuracy: position.coords.accuracy
-            };
-            
-            // Update UI
-            const indicator = document.getElementById('gpsIndicator');
-            const statusText = document.getElementById('gpsStatusText');
-            
-            indicator.classList.add('active');
-            statusText.textContent = 'GPS Active';
-            
-            // Hide alert
-            document.getElementById('gpsAlert').style.display = 'none';
-            
-            // Update location display
-            document.getElementById('yourLocation').textContent = 
-                `${userLocation.lat.toFixed(4)}°, ${userLocation.lng.toFixed(4)}°`;
-            document.getElementById('gpsAccuracy').textContent = 
-                `±${Math.round(userLocation.accuracy)}m`;
-            
-            // Set default pin if needed
-            if (!pinLocation) {
-                pinLocation = {
-                    lat: userLocation.lat + 0.0009, // ~100 yards
-                    lng: userLocation.lng
-                };
-                document.getElementById('pinLocation').textContent = 
-                    `${pinLocation.lat.toFixed(4)}°, ${pinLocation.lng.toFixed(4)}°`;
-            }
-            
-            // Calculate distance
-            calculateDistance();
-            
-            // Get weather
-            updateWeatherData();
-            
-            // Start watching position
-            startWatchingPosition();
-            
-            showNotification('✅ GPS location acquired!');
+        function updateWeather() {
+            // Simulate weather update
+            document.getElementById('wxStatus').classList.add('active');
+            showNotification('Weather updated');
         }
         
-        // Handle GPS Error
-        function handleGPSError(error) {
-            console.error('GPS Error Details:', error);
-            
-            const statusText = document.getElementById('gpsStatusText');
-            let message = '';
-            
-            switch(error.code) {
-                case 1:
-                    message = 'Permission denied - Check browser settings';
-                    showGPSAlert('Location access denied. Enable in browser settings.');
-                    break;
-                case 2:
-                    message = 'Position unavailable';
-                    showGPSAlert('GPS unavailable. Check device location settings.');
-                    break;
-                case 3:
-                    message = 'Timeout - Try again';
-                    showGPSAlert('GPS timeout. Make sure you have good signal.');
-                    break;
-                default:
-                    message = 'Unknown error';
-                    showGPSAlert('GPS error. Try again or check settings.');
-            }
-            
-            statusText.textContent = message;
-            updateDebugInfo(`GPS Error ${error.code}: ${error.message}`);
-            showNotification(`❌ ${message}`);
-        }
-        
-        // Start Watching Position
-        function startWatchingPosition() {
-            if (watchId) return;
-            
-            watchId = navigator.geolocation.watchPosition(
-                (position) => {
-                    userLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                        accuracy: position.coords.accuracy
-                    };
-                    
-                    document.getElementById('yourLocation').textContent = 
-                        `${userLocation.lat.toFixed(4)}°, ${userLocation.lng.toFixed(4)}°`;
-                    document.getElementById('gpsAccuracy').textContent = 
-                        `±${Math.round(userLocation.accuracy)}m`;
-                    
-                    calculateDistance();
-                },
-                (error) => {
-                    console.error('Watch position error:', error);
-                },
-                {
-                    enableHighAccuracy: true,
-                    maximumAge: 5000
-                }
-            );
-        }
-        
-        // Calculate Distance
-        function calculateDistance() {
-            if (!userLocation || !pinLocation) {
-                console.log('Missing location data');
-                return;
-            }
-            
-            // Haversine formula
-            const R = 6371e3; // Earth radius in meters
-            const φ1 = userLocation.lat * Math.PI/180;
-            const φ2 = pinLocation.lat * Math.PI/180;
-            const Δφ = (pinLocation.lat - userLocation.lat) * Math.PI/180;
-            const Δλ = (pinLocation.lng - userLocation.lng) * Math.PI/180;
-            
-            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                      Math.cos(φ1) * Math.cos(φ2) *
-                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            
-            const distanceMeters = R * c;
-            const distanceYards = Math.round(distanceMeters * 1.09361);
-            
-            appState.distance = distanceYards;
-            document.getElementById('rawDistance').textContent = distanceYards;
-            
-            // Calculate adjusted distance
-            calculateAdjustedDistance();
-        }
-        
-        // Calculate Adjusted Distance
-        function calculateAdjustedDistance() {
-            let adjusted = appState.distance;
-            
-            // Add all factors
-            Object.values(appState.factors).forEach(factor => {
-                adjusted += factor;
+        // Navigation
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
             });
             
-            appState.adjustedDistance = Math.max(0, adjusted);
-            document.getElementById('adjustedDistance').textContent = appState.adjustedDistance || '---';
+            // Remove active from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
             
-            // Update factors display
-            updateFactorsDisplay();
+            // Show selected page
+            document.getElementById(pageName + 'Page').classList.add('active');
+            
+            // Set active nav item
+            event.target.closest('.nav-item').classList.add('active');
+            
+            appState.currentPage = pageName;
         }
         
-        // Update Weather Data
-        async function updateWeatherData() {
-            if (!userLocation) {
-                showNotification('📍 Need GPS location for weather');
-                return;
+        // Edit Functions
+        let currentEditField = null;
+        
+        function editDistance() {
+            openInput('Distance (yards)', appState.distance.adjusted, 'distance');
+        }
+        
+        function editValue(type) {
+            let value, title;
+            
+            switch(type) {
+                case 'temp':
+                    value = appState.conditions.temperature;
+                    title = 'Temperature (°F)';
+                    break;
+                case 'wind':
+                    value = appState.conditions.windSpeed;
+                    title = 'Wind Speed (mph)';
+                    break;
+                case 'elevation':
+                    value = appState.conditions.elevation;
+                    title = 'Elevation (ft)';
+                    break;
             }
             
-            showNotification('🌤️ Updating weather...');
+            openInput(title, value, type);
+        }
+        
+        function editClubDistance(clubName) {
+            openInput(`${clubName} Distance (yards)`, appState.clubs[clubName], 'club', clubName);
+        }
+        
+        function openInput(title, value, field, extra = null) {
+            document.getElementById('inputTitle').textContent = title;
+            document.getElementById('inputField').value = value;
+            document.getElementById('inputModal').style.display = 'flex';
+            currentEditField = { field, extra };
             
-            try {
-                // Try real API first
-                const response = await fetch(`/api/weather?lat=${userLocation.lat}&lon=${userLocation.lng}`);
-                const data = await response.json();
+            // Focus and select text
+            setTimeout(() => {
+                const input = document.getElementById('inputField');
+                input.focus();
+                input.select();
+            }, 100);
+        }
+        
+        function closeInput() {
+            document.getElementById('inputModal').style.display = 'none';
+            currentEditField = null;
+        }
+        
+        function saveInput() {
+            const value = parseFloat(document.getElementById('inputField').value);
+            if (isNaN(value) || !currentEditField) return;
+            
+            const { field, extra } = currentEditField;
+            
+            switch(field) {
+                case 'distance':
+                    appState.distance.manual = value;
+                    appState.distance.adjusted = value;
+                    break;
+                case 'temp':
+                    appState.conditions.temperature = value;
+                    calculateAdjustments();
+                    break;
+                case 'wind':
+                    appState.conditions.windSpeed = value;
+                    calculateAdjustments();
+                    break;
+                case 'elevation':
+                    appState.conditions.elevation = value;
+                    calculateAdjustments();
+                    break;
+                case 'club':
+                    appState.clubs[extra] = value;
+                    populateClubList();
+                    updateClubRecommendation();
+                    break;
+            }
+            
+            updateUI();
+            closeInput();
+            showNotification('Value updated');
+        }
+        
+        // Calculations
+        function calculateAdjustments() {
+            const { temperature, windSpeed, elevation } = appState.conditions;
+            
+            // Temperature adjustment (baseline 77°F)
+            appState.conditions.tempAdjustment = Math.round((77 - temperature) * 0.15);
+            
+            // Wind adjustment (simplified)
+            appState.conditions.windAdjustment = Math.round(windSpeed * 0.4 * (Math.random() > 0.5 ? -1 : 1));
+            
+            // Elevation adjustment (1 yard per 3 feet)
+            appState.conditions.elevAdjustment = Math.round(elevation / 3);
+            
+            // Update total distance
+            if (!appState.distance.manual) {
+                const totalAdjustment = appState.conditions.tempAdjustment + 
+                                       appState.conditions.windAdjustment + 
+                                       appState.conditions.elevAdjustment + 
+                                       appState.lie.penalty;
                 
-                if (data.main) {
-                    // Real weather data
-                    document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°F`;
-                    document.getElementById('windSpeed').textContent = `${Math.round(data.wind.speed)} mph`;
-                    document.getElementById('humidity').textContent = `${data.main.humidity}%`;
-                    
-                    // Calculate factors
-                    appState.factors.temperature = Math.round((77 - data.main.temp) * 0.1);
-                    appState.factors.wind = Math.round(data.wind.speed * 0.3);
-                    
-                    showNotification('✅ Weather updated');
-                } else {
-                    throw new Error('No weather data');
+                appState.distance.adjusted = appState.distance.raw + totalAdjustment;
+            }
+        }
+        
+        // Club Functions
+        function populateClubList() {
+            const clubList = document.getElementById('clubList');
+            clubList.innerHTML = '';
+            
+            Object.entries(appState.clubs).forEach(([club, distance]) => {
+                const item = document.createElement('div');
+                item.className = 'club-item';
+                item.innerHTML = `
+                    <div class="club-name-label">${club}</div>
+                    <div class="club-distance" onclick="editClubDistance('${club}')">${distance} yds</div>
+                `;
+                clubList.appendChild(item);
+            });
+        }
+        
+        function updateClubRecommendation() {
+            const targetDistance = appState.distance.adjusted;
+            let bestClub = '';
+            let bestDiff = Infinity;
+            
+            Object.entries(appState.clubs).forEach(([club, distance]) => {
+                const diff = Math.abs(distance - targetDistance);
+                if (diff < bestDiff) {
+                    bestClub = club;
+                    bestDiff = diff;
+                }
+            });
+            
+            document.getElementById('recommendedClub').textContent = bestClub;
+            document.getElementById('clubConfidence').textContent = 
+                `Based on your ${appState.clubs[bestClub]} yard average`;
+        }
+        
+        // Action Functions
+        function setPinLocation() {
+            showNotification('Opening pin location...');
+            // Would integrate with Google Maps here
+        }
+        
+        function scanLie() {
+            showNotification('Analyzing lie...');
+            
+            // Simulate lie detection
+            setTimeout(() => {
+                const lies = [
+                    { type: 'fairway', penalty: 0, name: 'Fairway' },
+                    { type: 'rough', penalty: -8, name: 'Primary Rough' },
+                    { type: 'bunker', penalty: -12, name: 'Greenside Bunker' }
+                ];
+                
+                const detected = lies[Math.floor(Math.random() * lies.length)];
+                appState.lie = detected;
+                
+                document.getElementById('lieType').textContent = detected.name;
+                document.getElementById('liePenalty').textContent = 
+                    detected.penalty ? `${detected.penalty}y penalty` : 'No penalty';
+                
+                if (detected.penalty !== 0) {
+                    document.getElementById('liePenalty').classList.add('penalty');
                 }
                 
-            } catch (error) {
-                console.error('Weather API error:', error);
-                // Use simulated data
-                simulateWeather();
-            }
-            
-            // Get elevation
-            getElevation();
-            
-            calculateAdjustedDistance();
+                calculateAdjustments();
+                updateUI();
+                showNotification(`Lie detected: ${detected.name}`);
+            }, 2000);
         }
         
-        // Simulate Weather (Fallback)
-        function simulateWeather() {
-            const temp = 65 + Math.random() * 20;
-            const wind = 5 + Math.random() * 15;
-            const humidity = 40 + Math.random() * 40;
-            
-            document.getElementById('temperature').textContent = `${Math.round(temp)}°F`;
-            document.getElementById('windSpeed').textContent = `${Math.round(wind)} mph`;
-            document.getElementById('humidity').textContent = `${Math.round(humidity)}%`;
-            
-            appState.factors.temperature = Math.round((77 - temp) * 0.1);
-            appState.factors.wind = Math.round(wind * 0.3);
-            
-            showNotification('🌤️ Weather updated (simulated)');
+        function analyzeLie() {
+            scanLie();
         }
         
-        // Get Elevation
-        function getElevation() {
-            // For now, simulate elevation
-            const elevationFeet = -10 + Math.random() * 40;
-            document.getElementById('elevation').textContent = `${elevationFeet > 0 ? '+' : ''}${Math.round(elevationFeet)} ft`;
-            
-            appState.factors.elevation = Math.round(elevationFeet * 0.33);
+        function measureSlope() {
+            showNotification('Measuring slope...');
         }
         
-        // Set Pin Location
-        function setPinLocation() {
-            if (!userLocation) {
-                showNotification('📍 Get GPS location first');
-                return;
-            }
+        // UI Updates
+        function updateUI() {
+            // Distance display
+            document.getElementById('distanceValue').textContent = appState.distance.adjusted;
+            document.getElementById('rawDistance').textContent = appState.distance.raw;
             
-            const distance = prompt('Enter distance to pin in yards:', '150');
-            if (!distance) return;
+            // Conditions
+            document.getElementById('tempValue').textContent = `${Math.round(appState.conditions.temperature)}°`;
+            document.getElementById('windValue').textContent = `${Math.round(appState.conditions.windSpeed)} mph`;
+            document.getElementById('elevValue').textContent = 
+                `${appState.conditions.elevation > 0 ? '+' : ''}${Math.round(appState.conditions.elevation)} ft`;
             
-            const yards = parseInt(distance);
-            if (isNaN(yards) || yards < 1 || yards > 999) {
-                showNotification('❌ Invalid distance');
-                return;
-            }
+            // Adjustments
+            const tempAdj = appState.conditions.tempAdjustment;
+            const windAdj = appState.conditions.windAdjustment;
+            const elevAdj = appState.conditions.elevAdjustment;
             
-            // Simple calculation - put pin north
-            const meters = yards * 0.9144;
-            const latOffset = meters / 111111;
+            document.getElementById('tempImpact').textContent = tempAdj ? `${tempAdj > 0 ? '+' : ''}${tempAdj}y` : '0y';
+            document.getElementById('windImpact').textContent = windAdj ? `${windAdj > 0 ? '+' : ''}${windAdj}y` : '0y';
+            document.getElementById('elevImpact').textContent = elevAdj ? `${elevAdj > 0 ? '+' : ''}${elevAdj}y` : '0y';
             
-            pinLocation = {
-                lat: userLocation.lat + latOffset,
-                lng: userLocation.lng
-            };
+            // Stats page adjustments
+            document.getElementById('elevAdjustment').textContent = elevAdj > 0 ? `+${elevAdj}` : elevAdj;
+            document.getElementById('windAdjustment').textContent = windAdj > 0 ? `+${windAdj}` : windAdj;
+            document.getElementById('tempAdjustment').textContent = tempAdj > 0 ? `+${tempAdj}` : tempAdj;
+            document.getElementById('conditionsAdjustment').textContent = '+1';
             
-            document.getElementById('pinLocation').textContent = 
-                `${pinLocation.lat.toFixed(4)}°, ${pinLocation.lng.toFixed(4)}°`;
-            
-            calculateDistance();
-            showNotification(`⛳ Pin set at ${yards} yards`);
+            // Update class names for colors
+            updateAdjustmentColors();
+            updateClubRecommendation();
         }
         
-        // Update Factors Display
-        function updateFactorsDisplay() {
-            const factorsList = document.getElementById('factorsList');
+        function updateAdjustmentColors() {
+            const impacts = ['tempImpact', 'windImpact', 'elevImpact'];
+            const adjustments = ['elevAdjustment', 'windAdjustment', 'tempAdjustment'];
             
-            const factors = [
-                { name: 'Elevation', value: appState.factors.elevation, unit: 'yds' },
-                { name: 'Wind', value: appState.factors.wind, unit: 'yds' },
-                { name: 'Temperature', value: appState.factors.temperature, unit: 'yds' },
-                { name: 'Total Adjustment', value: Object.values(appState.factors).reduce((a, b) => a + b, 0), unit: 'yds' }
-            ];
+            impacts.forEach(id => {
+                const el = document.getElementById(id);
+                const value = parseInt(el.textContent);
+                el.classList.remove('positive', 'negative');
+                if (value > 0) el.classList.add('positive');
+                if (value < 0) el.classList.add('negative');
+            });
             
-            factorsList.innerHTML = factors.map(factor => `
-                <div class="factor-item">
-                    <span class="factor-name">${factor.name}</span>
-                    <span class="factor-value ${factor.value < 0 ? 'negative' : ''}">
-                        ${factor.value > 0 ? '+' : ''}${factor.value} ${factor.unit}
-                    </span>
-                </div>
-            `).join('');
+            adjustments.forEach(id => {
+                const el = document.getElementById(id);
+                const value = parseInt(el.textContent);
+                el.classList.remove('positive', 'negative');
+                if (value > 0) el.classList.add('positive');
+                if (value < 0) el.classList.add('negative');
+            });
         }
         
-        // Show Debug Info
-        function showDebugInfo() {
-            const panel = document.getElementById('debugPanel');
-            const info = document.getElementById('debugInfo');
-            
-            const debugData = {
-                'Browser': navigator.userAgent.match(/iPhone|Android|iPad/) || 'Desktop',
-                'Protocol': location.protocol,
-                'Hostname': location.hostname,
-                'GPS Available': 'geolocation' in navigator,
-                'GPS Attempts': gpsAttempts,
-                'User Location': userLocation ? `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}` : 'Not set',
-                'Pin Location': pinLocation ? `${pinLocation.lat.toFixed(4)}, ${pinLocation.lng.toFixed(4)}` : 'Not set',
-                'Distance': appState.distance + ' yards',
-                'Adjusted': appState.adjustedDistance + ' yards'
-            };
-            
-            info.innerHTML = Object.entries(debugData).map(([key, value]) => 
-                `<div class="debug-item"><strong>${key}:</strong> ${value}</div>`
-            ).join('');
-            
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-        }
-        
-        // Update Debug Info
-        function updateDebugInfo(message) {
-            console.log('Debug:', message);
-        }
-        
-        // Enable GPS (from alert)
-        function enableGPS() {
-            document.getElementById('gpsAlert').style.display = 'none';
-            forceGPSRequest();
-        }
-        
-        // Show Notification
+        // Notifications
         function showNotification(message) {
             // Remove existing notifications
             document.querySelectorAll('.notification').forEach(n => n.remove());
             
             const notification = document.createElement('div');
             notification.className = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--primary);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 20px;
+                font-size: 14px;
+                z-index: 1000;
+                animation: slideUp 0.3s ease;
+            `;
             notification.textContent = message;
             document.body.appendChild(notification);
             
             setTimeout(() => {
                 notification.remove();
-            }, 3000);
+            }, 2500);
         }
+        
+        // Initialize with calculations
+        calculateAdjustments();
+        updateUI();
     </script>
 </body>
 </html>
+Improve
+Explain
+Enhancing CaddAIe's GPS and UI - Claude
